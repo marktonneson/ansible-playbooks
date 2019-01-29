@@ -1,0 +1,22 @@
+# Example of SELinux system role
+
+# Check syntax, test
+
+---
+- hosts: targets
+  vars:
+    selinux_policy: targeted
+    selinux_state: enforcing
+    selinux_booleans:
+      - { name: 'samba_enable_home_dirs', state: 'on' }
+      - { name: 'ssh_sysadm_login', state: 'on', persistent: 'yes' }
+    selinux_fcontexts:
+      - { target: '/tmp/test_dir(/.*)?', setype: 'user_home_dir_t', ftype: 'd', state: 'present' }
+    selinux_restore_dirs:
+      - /tmp/test_dir
+
+  roles:
+    - role: linux-system-roles.selinux
+      become: true
+
+

@@ -1,0 +1,18 @@
+# Example of kdump system role
+
+# Check syntax, test
+
+---
+- hosts: targets
+  vars:
+    kdump_target:
+      type: ssh
+      location: user@kdumphost.example.com
+
+    # Action in event of failure
+    kdump_system_action: reboot
+
+  roles:
+    - role: linux-system-roles.kdump
+      become: true
+

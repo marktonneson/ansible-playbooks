@@ -1,0 +1,18 @@
+# Example of network system role
+
+# Check syntax, test
+
+---
+- hosts: rhel7.5-test
+  vars:
+    network_connections:
+      - name: eth0
+        state: up
+        type: ethernet
+        interface_name: eth0
+        autoconnect: yes
+        ip:
+          dhcp4: yes
+          auto6: no
+  roles:
+    - role: rhel-system-roles.network

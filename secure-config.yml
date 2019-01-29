@@ -1,0 +1,28 @@
+---
+- name: Secure Server Config
+  hosts: all
+  tasks:
+# Secure Config
+  - name: SELinux config
+    selinux: 
+      policy: targeted
+      state: enforcing
+
+  - name: Services config
+    service:
+      name: crond
+      enabled: yes
+      state: started
+      masked: no
+
+      name: sshd
+      enabled: yes
+      state: started
+      masked: no
+
+# Secure Config
+      name: firewalld
+      enabled: yes
+      state: started
+      masked: no
+

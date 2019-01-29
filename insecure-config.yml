@@ -1,0 +1,27 @@
+---
+- name: Insecure Server Config
+  hosts: all
+  tasks:
+# Insecure Config
+  - name: SELinux config
+    selinux: 
+      state: disabled
+
+  - name: Services config
+    service:
+      name: crond
+      enabled: yes
+      state: started
+      masked: no
+
+      name: sshd
+      enabled: yes
+      state: started
+      masked: no
+
+# Insecure Config
+      name: firewalld
+      enabled: no
+      state: stopped
+      masked: yes
+

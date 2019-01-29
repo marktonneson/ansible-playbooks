@@ -1,0 +1,23 @@
+# Example of timesync system role
+
+# Check syntax, test
+
+
+#  minpoll: 4                  # Minimum polling interval (default 6)
+#  maxpoll: 8                  # Maximum polling interval (default 10)
+#  iburst: yes                 # Flag enabling fast initial synchronization (default no)
+#  pool: no                    # Flag indicating that each resolved address
+#                              # of the hostname is a separate NTP server (default no)
+
+---
+- hosts: targets
+  vars:
+    timesync_ntp_servers:
+      - hostname: ntp1.example.com
+        iburst: yes
+      - hostname: ntp2.example.com
+        iburst: yes
+      - hostname: ntp3.example.com
+        iburst: yes
+  roles:
+    - timesync
