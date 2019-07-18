@@ -1,0 +1,13 @@
+---
+- name: Public key is deployed to hosts
+  hosts: all
+  vars:
+    key_user: root
+    key_file: ~/.ssh/id_rsa.pub
+
+  tasks:
+    - name: Ensure key is in {{ key_user}} ~/.ssh/authorized_hosts
+      authorized_key:
+        user: '{{ key_user }}'
+        state: present
+        key: '{{ key_file }}'
