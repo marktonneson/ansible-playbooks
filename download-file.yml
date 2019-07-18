@@ -1,0 +1,16 @@
+---
+- name: Download a file
+  hosts: all
+  vars:
+    dl_url: http://localhost/index.html
+    dl_dest: /tmp/tmpfile.tmp
+    dl_mode: '0440'
+    dl_owner: root
+
+  tasks:
+    - name: insert
+      get_url:
+        url: '{{ dl_url }}'
+        dest: '{{ dl_dest }}'
+        mode: '{{ dl_mode }}'
+        owner: '{{ dl_owner }}'
