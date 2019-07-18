@@ -1,0 +1,17 @@
+---
+- hosts: demo
+  name: Remove the apache web service
+  become: yes
+
+  tasks:
+    - name: stop httpd
+      service:
+        name: httpd
+        state: stopped
+
+    - name: remove apache
+      yum:
+        name: httpd
+        state: absent
+
+
