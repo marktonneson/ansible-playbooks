@@ -1,0 +1,7 @@
+---
+- hosts: all
+
+  tasks:
+    - name: Print a message
+      debug:
+        msg: Success!
