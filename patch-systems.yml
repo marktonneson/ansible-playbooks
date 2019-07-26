@@ -1,0 +1,10 @@
+---
+- hosts: "all"
+  tasks:
+    - name: "Patch Servers"
+      include_role:
+        name: "ahuffman.patching"
+      vars:
+        patch_display_patch_output: True
+        patch_never_reboot: False
+        patch_never_restart_svc: False
