@@ -1,6 +1,7 @@
 ---
 - name: Public key is deployed to hosts
   hosts: all
+  ignore_unreachable: True
   vars:
     key_user: root
     key_file: ~/.ssh/id_rsa.pub
