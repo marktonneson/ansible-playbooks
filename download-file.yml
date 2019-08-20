@@ -1,6 +1,7 @@
 ---
 - name: Download a file
   hosts: all
+  ignore_unreachable: True
   vars:
     dl_url: http://localhost/index.html
     dl_dest: /tmp/tmpfile.tmp
