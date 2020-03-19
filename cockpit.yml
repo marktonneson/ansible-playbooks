@@ -1,0 +1,30 @@
+---
+- name: Install and configure Cockpit
+  hosts: all
+
+  tasks:
+  - name: Install Cockpit
+    yum:
+      enablerepo: rhel-7-server-extras-rpms
+      name: cockpit
+      state: latest
+    when: ansible_distribution == 'RedHat' and ansible_distribution_major_version == '7'
+
+  - name: Enable cockpit
+    service:
+      name: cockpit.socket
+      enabled: yes
+    notify: restart_cockpit
+
+  - name: Enable firewall rule
+    firewalld:
+      service: cockpit
+      permanent: yes
+      immediate: yes
+      state: enabled
+
+  handlers:
+    - name: restart_cockpit
+      service:
+        name: cockpit
+        state: restarted
