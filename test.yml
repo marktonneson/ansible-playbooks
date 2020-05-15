@@ -1,0 +1,8 @@
+---
+- name: Test playbook
+  hosts: all
+
+  tasks:
+  - name: output
+    debug:
+      msg: "{{ satellite_group_name }}"
