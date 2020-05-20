@@ -1,6 +1,6 @@
 ---
 - name: Test playbook
-  hosts: all
+  hosts: "{{ satellite_group_name | default ('all') }}"
 
   tasks:
   - name: output
