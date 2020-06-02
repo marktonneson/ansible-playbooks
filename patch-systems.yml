@@ -1,5 +1,5 @@
 ---
-- hosts: "all"
+- hosts: "{{ satellite_group_name }}""
   tasks:
     - name: "Patch RHEL 6 Servers"
       vars:
