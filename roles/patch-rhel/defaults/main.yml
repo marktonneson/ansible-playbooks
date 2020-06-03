@@ -1,0 +1,5 @@
+---
+patch_display_patch_output: true
+patch_never_reboot: false
+patch_never_restart_svc: false
+patch_reboot_message: 'Rebooting due to patching.'

@@ -1,0 +1,4 @@
+---
+- name: "Reboot RHEL 6 after patching"
+  reboot:
+    msg: "{{ patch_reboot_message }}"

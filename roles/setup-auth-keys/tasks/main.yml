@@ -1,0 +1,6 @@
+---
+- name: Ensure key is in {{ key_user}} ~/.ssh/authorized_hosts
+  authorized_key:
+    user: '{{ key_user }}'
+    state: present
+    key: '{{ key_file }}'

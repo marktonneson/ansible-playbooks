@@ -1,0 +1,5 @@
+---
+dl_url: http://localhost/index.html
+dl_dest: /tmp/tmpfile.tmp
+dl_mode: '0440'
+dl_owner: root

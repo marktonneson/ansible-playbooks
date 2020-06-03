@@ -24,7 +24,9 @@
           state: enabled
           offline: yes
         ignore_errors: yes
-    when: ansible_distribution == 'RedHat' and ansible_distribution_major_version != '6'
+    when:
+      - ansible_distribution == 'RedHat'
+      - ansible_distribution_major_version != '6'
   handlers:
     - name: restart_cockpit
       service:
