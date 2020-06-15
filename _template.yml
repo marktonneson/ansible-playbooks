@@ -1,0 +1,39 @@
+---
+- name: playbook template
+  hosts: "{{ satellite_group_name | default ('all') }}"
+  become: yes
+  ignore_unreachable: yes
+  vars:
+    var1: value
+    multi_var:
+      - value1
+      - value2
+
+  roles:
+    - role1
+
+  tasks:
+    - name: task1
+      module:
+        param: value1
+      notify: handler1
+
+    - name: debug example
+      debug:
+        msg: 'This is the output'
+        
+    - name: block example
+      block:
+        - name: task1
+      when: ansible_fact == 'value'
+
+    - name: cmd _when & register
+      command: 'run_this'
+      changed_when: "run_this_stdout.rc == 1"
+      failed_when: "run_this_stdout.rc > 1"
+      register: "run_this_stdout"
+
+  handlers:
+    - name: handler1
+      module:
+        param: value

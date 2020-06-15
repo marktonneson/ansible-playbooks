@@ -2,7 +2,8 @@
 - name: Test playbook
   hosts: "{{ satellite_group_name | default ('all') }}"
 
-  tasks:
-  - name: output
-    debug:
-      msg: "{{ satellite_group_name }}"
+  roles:
+    - download-file
+    - patch-rhel
+    - patch-rhel-6
+    - setup-auth-keys
