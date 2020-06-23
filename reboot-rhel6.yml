@@ -1,0 +1,12 @@
+---
+- name: "Reboot RHEL 6 after patching"
+  hosts: all
+  vars:
+    - patch_reboot_message: 'Rebooting due to patching.'
+  tasks:
+    - name: "Reboot servers"
+      reboot:
+        msg: "{{ patch_reboot_message }}"
+      when:
+        - 'ansible_os_family == "RedHat"'
+        - 'ansible_distribution_major_version == "6"'
