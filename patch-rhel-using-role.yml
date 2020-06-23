@@ -1,6 +1,7 @@
 ---
-- name: Patch RHEL systems using role
-  include_role:
-    name: "patch-rhel"
+- name: Patch RHEL using roles
+  hosts: all
+  roles:
+    - "patch-rhel"
   vars:
     rhel_major_ver: '7'
