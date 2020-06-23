@@ -1,6 +1,6 @@
 ---
 - name: Patch RHEL 6 systems using role
-  hosts: all
+  hosts: "{{ satellite_group_name | default ('all') }}"
   roles:
     - "patch-rhel-6"
   vars:
