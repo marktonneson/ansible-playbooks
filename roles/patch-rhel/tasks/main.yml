@@ -43,4 +43,4 @@
       when: "patch_display_patch_output"
   when:
     - 'ansible_os_family == "RedHat"'
-    - 'ansible_distribution_major_version == [rhel_major_ver]'
+    - 'ansible_distribution_major_version == rhel_major_ver'
