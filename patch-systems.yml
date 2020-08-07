@@ -66,13 +66,15 @@
           retries: "3"
           until: "patch_yum_results is succeeded"
 
-        - name: "Check if services need restarting"
-          command: 'needs-restarting -s'
-          changed_when: "needs_service_restart.stdout_lines | length > 0"
-          register: "needs_service_restart"
-          notify:
-            - "Restart required services"
-          when: 'not patch_never_restart_svc'
+# 'needs-restarting -s' not available in RHEL 8
+# functionality planned for RHEL8.4 per BZ1772939
+#        - name: "Check if services need restarting"
+#          command: 'needs-restarting -s'
+#          changed_when: "needs_service_restart.stdout_lines | length > 0"
+#          register: "needs_service_restart"
+#          notify:
+#            - "Restart required services"
+#          when: 'not patch_never_restart_svc'
 
         - name: "Check if reboot is required"
           command: 'needs-restarting -r'
