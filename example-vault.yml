@@ -1,0 +1,18 @@
+---
+# To run non-interactively w/o password
+#    Create vault-password file with [vault_password]
+#    chmod 0600 vault-password
+#    ansible-playbook --vault-password-file=vault-password example-vault.yml
+# Or interatively w/ vault password prompt
+#    ansible-playbook --ask-vault-pass example-vault.yml
+- name: Test secrets with vault
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    # create file with keypair = 'password: [secret_password]'
+    # encrypt file with ansible-vault encrypt secret-vars.yml
+    - secret-vars.yml
+  tasks:
+    - name: Output
+      debug:
+        msg: "{{ password }}"
