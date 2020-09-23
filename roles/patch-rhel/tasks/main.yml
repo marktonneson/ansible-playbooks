@@ -37,6 +37,11 @@
         - "Reboot after patching"
       when: 'not patch_never_reboot'
 
+    - name: Debug needs_reboot
+      debug:
+        msg: "needs_reboot.rc = {{ needs_reboot.rc }} "
+        verbosity: 2
+        
     - name: "Output collected yum update output"
       debug:
         var: "patch_yum_results.results"
