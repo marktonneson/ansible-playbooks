@@ -8,7 +8,7 @@
       - name: Install Cockpit
         yum:
           name: cockpit
-          state: latest
+          state: present
 
       - name: Enable cockpit
         service:
