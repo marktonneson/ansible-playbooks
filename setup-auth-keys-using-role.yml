@@ -1,0 +1,7 @@
+---
+- name: Public key is deployed to hosts
+  hosts: all
+  ignore_unreachable: True
+  gather_facts: no
+  roles:
+    - "setup-auth-keys"
