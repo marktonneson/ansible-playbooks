@@ -1,0 +1,9 @@
+---
+- name: Download a file
+  hosts: all
+  ignore_unreachable: True
+  gather_facts: no
+  roles:
+    - "download-file"
+  vars:
+    force_yn: 'yes'
