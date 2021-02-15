@@ -1,0 +1,52 @@
+---
+# Various ansible advanced or lesser used tips & tricks
+
+# still need:
+#  ignore_errors
+#  ansible_managed
+
+  vars_prompt:
+    - name: test
+      prompt: "Password?"
+      private: true
+
+  tasks:
+    - name: smoke test for port
+      wait_for:
+        state: drained
+        port: 22
+      delegate_to: localhost
+
+    - name: Add host dynamcially
+      add_host:
+
+    - name: async and poll
+      async:
+      poll:
+
+    - name: loop with _control & _var
+      loop:
+
+    - name: cmd _when & register
+      command: 'run_this'
+      changed_when: "run_this_stdout.rc == 1"
+      failed_when: "run_this_stdout.rc > 1"
+      register: "run_this_stdout"
+
+    - name: smoke test check for http
+      uri:
+        url: http://localhost/myapp
+        return_content: yes
+      register: result
+      until: '"Hello World" in result.content'
+      retries: 10
+      delay: 1
+
+    - name: example to validate vars or values, plus when positioning
+      when: my_param is defined
+      assert:
+        that:
+          - my_param <= 100
+          - my_param >= 0
+        fail_msg: "'my_param' must be between 0 and 100"
+        success_msg: "'my_param' is between 0 and 100"
