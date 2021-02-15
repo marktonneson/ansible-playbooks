@@ -1,8 +1,9 @@
 ---
 - name: playbook template
   hosts: "{{ satellite_group_name | default ('all') }}"
-  become: yes
-  ignore_unreachable: yes
+  become: true
+  gather_facts: true
+  ignore_unreachable: true
   vars:
     var1: value
     multi_var:
@@ -29,17 +30,12 @@
     - name: debug example
       debug:
         msg: 'This is the output'
+        verbosity: 2
 
     - name: block example
       block:
         - name: task1
       when: ansible_fact == 'value'
-
-    - name: cmd _when & register
-      command: 'run_this'
-      changed_when: "run_this_stdout.rc == 1"
-      failed_when: "run_this_stdout.rc > 1"
-      register: "run_this_stdout"
 
   handlers:
     - name: handler1
