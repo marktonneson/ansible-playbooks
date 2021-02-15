@@ -1,0 +1,35 @@
+---
+- name: "Monitor disk space"
+  hosts: "{{ satellite_group_name | default ('all') }}"
+  become: yes
+  ignore_unreachable: yes
+  gather_facts: no
+  vars:
+    warn_threshold: 0.2
+    warn_threshold_text: "80%"
+    critical_threshold: 0.1
+    critical_threshold_text: "90%"
+
+  tasks:
+     - name: Collect only facts needed to check disk space
+       setup: filter=ansible_mounts
+       
+     - name: Ensure that free space on each mountpoint is greater than warn_threshold
+       assert:
+         that:
+           - mount.size_available > mount.size_total|float * warn_threshold
+         msg: "WARNING = Disk space on {{ inventory_hostname }} mount {{ item.mount }} has reached {{ warn_threshold_text }}"
+       vars:
+         mount: "{{ ansible_mounts | selectattr('mount','equalto',item.mount) | list | first }}"
+       with_items:
+         - "{{ ansible_mounts }}"
+
+     - name: Ensure that free space on each mountpoint is greater than critical_threshold
+       assert:
+         that:
+           - mount.size_available > mount.size_total|float * critical_threshold
+         msg: "WARNING = Disk space on {{ inventory_hostname }} mount {{ item.mount }} has reached {{ critical_threshold_text }}"
+       vars:
+         mount: "{{ ansible_mounts | selectattr('mount','equalto',item.mount) | list | first }}"
+       with_items:
+         - "{{ ansible_mounts }}"
