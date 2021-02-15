@@ -19,7 +19,8 @@
        assert:
          that:
            - mount.size_available > mount.size_total|float * warn_threshold
-         msg: "WARNING = Disk space on {{ inventory_hostname }} mount {{ item.mount }} has reached {{ warn_threshold_text }}"
+         fail_msg: "WARNING = Disk space on {{ inventory_hostname }} mount {{ item.mount }} has reached {{ warn_threshold_text }}"
+         quiet: yes
        vars:
          mount: "{{ ansible_mounts | selectattr('mount','equalto',item.mount) | list | first }}"
        with_items:
@@ -29,7 +30,8 @@
        assert:
          that:
            - mount.size_available > mount.size_total|float * critical_threshold
-         msg: "WARNING = Disk space on {{ inventory_hostname }} mount {{ item.mount }} has reached {{ critical_threshold_text }}"
+         fail_msg: "WARNING = Disk space on {{ inventory_hostname }} mount {{ item.mount }} has reached {{ critical_threshold_text }}"
+         quiet: yes
        vars:
          mount: "{{ ansible_mounts | selectattr('mount','equalto',item.mount) | list | first }}"
        with_items:
