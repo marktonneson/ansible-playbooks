@@ -1,0 +1,15 @@
+---
+- name: System check for vbox
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+
+
+  tasks:
+    - name: Checking mount points
+
+    - name: Checking services
+
+    - name: Checking running VMs   
+
