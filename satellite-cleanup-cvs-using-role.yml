@@ -1,0 +1,37 @@
+---
+- name: Cleanup Content Views
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    # Contains value for vault_admin_password
+    - admin_password.vault
+
+  vars:
+    satellite_host: "{{ my_satellite | default ('satellite.tonneson.home') }}"
+    num_versions_to_keep: 4
+    default_org_to_cleanup: "{{ my_org_to_cleanup | default ('Example.com') }}"
+    default_server_url: "https://{{ satellite_host }}"
+    default_username: "{{ my_admin_user | default ('admin') }}"
+    second_org_to_cleanup: "Home Lab"
+    default_validate_certs: no
+
+  roles:
+    - role: redhat.satellite.content_view_version_cleanup
+      vars:
+        satellite_server_url: "{{ default_server_url }}"
+        satellite_username: "{{ default_username }}"
+        satellite_password: "{{ vault_admin_password }}"
+        satellite_organization: "{{ default_org_to_cleanup }}"
+        satellite_content_view_version_cleanup_keep: "{{ num_versions_to_keep }}"
+        satellite_validate_certs: "{{ default_validate_certs }}"
+
+    - role: redhat.satellite.content_view_version_cleanup
+      vars:
+        satellite_server_url: "{{ default_server_url }}"
+        satellite_username: "{{ default_username }}"
+        satellite_password: "{{ vault_admin_password }}"
+        satellite_organization: "{{ second_org_to_cleanup }}"
+        satellite_content_view_version_cleanup_keep: "{{ num_versions_to_keep }}"
+        satellite_validate_certs: "{{ default_validate_certs }}"

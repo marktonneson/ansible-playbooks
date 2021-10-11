@@ -1,0 +1,26 @@
+---
+- name: Refresh Satellite manifests
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    # Contains value for vault_admin_password
+    - admin_password.vault
+
+  vars:
+    satellite_host: "{{ my_satellite | default ('satellite.tonneson.home') }}"
+    orgs_to_refresh:
+      - Example.com
+      - "Home Lab"
+
+  tasks:
+    - name: "Refreshing manifest"
+      redhat.satellite.subscription_manifest:
+        username: "{{ my_admin_user | default ('admin') }}"
+        password: "{{ vault_admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        organization: "{{ item }}"
+        state: refreshed
+        validate_certs: no
+      loop: "{{ orgs_to_refresh }}"

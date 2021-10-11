@@ -1,0 +1,74 @@
+---
+- name: Publish and promote content views
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    # Contains value for vault_admin_password
+    - admin_password.vault
+
+  vars:
+    admin_username: "{{ my_admin_user | default ('admin') }}"
+    admin_password: "{{ vault_admin_password }}"
+    satellite_host: "{{ my_satellite | default ('satellite.tonneson.home') }}"
+    org_to_target: "{{ my_organization | default ('Example.com') }}"
+    default_description: "Monthly Publishing"
+
+  tasks:
+    - name: "Promote content view version in QA (n-2) is moved to Prod"
+      redhat.satellite.content_view_version:
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        content_view: "{{ item }}"
+        organization: "{{ org_to_target }}"
+        validate_certs: no
+        description: "{{ default_description }}"
+        current_lifecycle_environment: QA
+        lifecycle_environments:
+          - Prod
+      loop:
+        - cv-RHEL6
+        - cv-RHEL7
+        - cv-RHEL8
+        - ccv-RHEL6-plus-SatClient
+        - ccv-RHEL7-plus-SatClient
+        - ccv-RHEL8-plus-SatClient
+
+    - name: "Promote content view version in Dev (n-1) is moved to QA"
+      redhat.satellite.content_view_version:
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        content_view: "{{ item }}"
+        organization: "{{ org_to_target }}"
+        validate_certs: no
+        description: "{{ default_description }}"
+        current_lifecycle_environment: Dev
+        lifecycle_environments:
+          - QA
+      loop:
+        - cv-RHEL6
+        - cv-RHEL7
+        - cv-RHEL8
+        - ccv-RHEL6-plus-SatClient
+        - ccv-RHEL7-plus-SatClient
+        - ccv-RHEL8-plus-SatClient
+
+    - name: "Publish a content view and promote that version to Library & Dev, not idempotent"
+      redhat.satellite.content_view_version:
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        content_view: "{{ item }}"
+        organization: "{{ org_to_target }}"
+        validate_certs: no
+        description: "{{ default_description }}"
+        lifecycle_environments:
+          - Library
+          - Dev
+      loop:
+        - cv-RHEL6
+        - cv-RHEL7
+        - cv-RHEL8
