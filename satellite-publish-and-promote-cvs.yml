@@ -72,3 +72,20 @@
         - cv-RHEL6
         - cv-RHEL7
         - cv-RHEL8
+
+    - name: "Promote CCV version to Dev, auto-published via previous task"
+      redhat.satellite.content_view_version:
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        content_view: "{{ item }}"
+        organization: "{{ org_to_target }}"
+        validate_certs: no
+        description: "{{ default_description }}"
+        current_lifecycle_environment: Libary
+        lifecycle_environments:
+          - Dev
+      loop:
+        - ccv-RHEL6-plus-SatClient
+        - ccv-RHEL7-plus-SatClient
+        - ccv-RHEL8-plus-SatClient
