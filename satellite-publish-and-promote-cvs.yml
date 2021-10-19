@@ -4,9 +4,9 @@
   connection: local
   gather_facts: no
 
-  vars_files:
+  #vars_files:
     # Contains value for vault_admin_password
-    - admin_password.vault
+  #  - admin_password.vault
 
   vars:
     admin_username: "{{ my_admin_user | default ('admin') }}"
