@@ -1,12 +1,12 @@
 ---
 - name: Cleanup Content Views
-  hosts: localhost
-  connection: local
+  hosts: "{{ localhost | default ('satellite.tonneson.home') }}"
   gather_facts: no
 
-  vars_files:
+  #vars_files:
     # Contains value for vault_admin_password
-    - admin_password.vault
+    # Commented out when using via Tower/Controller
+  #  - admin_password.vault
 
   vars:
     satellite_host: "{{ my_satellite | default ('satellite.tonneson.home') }}"
