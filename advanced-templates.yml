@@ -1,9 +1,9 @@
 ---
 # Various ansible advanced or lesser used tips & tricks
 
-# still need:
-#  ignore_errors
-#  ansible_managed
+#
+#  Consider deleting this file and using Google Doc as master
+#  
 
   vars_prompt:
     - name: test

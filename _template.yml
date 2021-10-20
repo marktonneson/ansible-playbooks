@@ -4,6 +4,7 @@
   become: true
   gather_facts: true
   ignore_unreachable: true
+
   vars:
     var1: value
     multi_var:
@@ -16,28 +17,17 @@
   tasks:
     - name: task1
       module:
-        param: value1
-      notify: handler1
-
-    - name: loop example
-      service:
-        name: "{{ item.name }}"
-        state: "{{ item.state }}"
-      loop:
-        - { name: 'service1', state: 'started' }
-        - { name: 'service2', state: 'stopped' }
+        key: value1
+      notify: my_handler
+      when: ansible_fact == 'value'
 
     - name: debug example
       debug:
         msg: 'This is the output'
         verbosity: 2
 
-    - name: block example
-      block:
-        - name: task1
-      when: ansible_fact == 'value'
-
   handlers:
-    - name: handler1
-      module:
-        param: value
+    - name: my_handler
+      service:
+        name: value
+        state: restarted

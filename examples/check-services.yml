@@ -1,0 +1,19 @@
+---
+- name: Check system services / daemons
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Checking services
+      service:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - chronyd
+        - crond
+        - kdump
+        - sshd
+        - sssd
+
+
+

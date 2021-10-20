@@ -10,6 +10,21 @@
     - name: Checking mount points
 
     - name: Checking services
+      service:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - chronyd
+        - cockpit
+        - crond
+        - httpd
+        - sshd
+        - virt-who
 
-    - name: Checking running VMs   
+    - name: Checking libvirt
+      service:
+        name: libvirtd
+        state: started
+      when: "{{ lookup('file', '/root/pause-check-kvm') }}"
 
+    - name: Checking running VMs
