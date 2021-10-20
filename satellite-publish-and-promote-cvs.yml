@@ -1,11 +1,11 @@
 ---
 - name: Publish and promote content views
-  hosts: localhost
-  connection: local
+  hosts: "{{ localhost | default ('satellite.tonneson.home') }}"
   gather_facts: no
 
   #vars_files:
     # Contains value for vault_admin_password
+    # Commented out when using via Tower/Controller
   #  - admin_password.vault
 
   vars:
