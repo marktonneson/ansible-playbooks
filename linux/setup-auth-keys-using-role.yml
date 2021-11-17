@@ -4,4 +4,4 @@
   ignore_unreachable: True
   gather_facts: no
   roles:
-    - "setup-auth-keys"
+    - "../roles/setup-auth-keys"
