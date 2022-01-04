@@ -12,7 +12,7 @@
     admin_username: "{{ my_admin_user | default ('admin') }}"
     admin_password: "{{ vault_admin_password }}"
     satellite_host: "{{ my_satellite | default ('satellite.tonneson.home') }}"
-    org_to_target: "{{ my_organization | default ('Example.com') }}"
+    org_to_target: "{{ my_organization | default ('Tonneson Lab') }}"
     default_description: "Monthly Publishing"
 
   tasks:
