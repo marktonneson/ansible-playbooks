@@ -82,7 +82,7 @@
         organization: "{{ org_to_target }}"
         validate_certs: no
         description: "{{ default_description }}"
-        current_lifecycle_environment: Libary
+        current_lifecycle_environment: Library
         lifecycle_environments:
           - Dev
       loop:
