@@ -1,0 +1,33 @@
+---
+- name: Start VMs
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - secret-vars.yml
+  vars:
+    engine_url: https://rhvm.tonneson.home/ovirt-engine/api
+    engine_user: admin@internal
+    engine_cafile: /etc/pki/ovirt-engine/ca.pem
+
+  tasks:
+    - name: Start VMs
+      ovirt_vm:
+        auth:
+          url: "{{ engine_url }}"
+          username: "{{ engine_user }}"
+          password: "{{ engine_password }}"
+          ca_file: "{{ engine_cafile }}"
+        state: running
+        name: "{{ item }}"
+      loop:
+        - rhel7-vm.example.com
+        - rhel8-vm.example.com
+#
+# Old loop using id vs name
+#
+#        id: "{{ item }}"
+#      loop:
+#        - 6a0c9685-eee0-4c59-85f4-84cae72a6d43
+#        - 9957cb4a-9f9d-4a77-8ec4-0ef448cc7411

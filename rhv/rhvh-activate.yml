@@ -1,0 +1,35 @@
+---
+
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Login to RHVM
+      ovirt_auth:
+        url: https://rhvm.tonneson.org/ovirt-engine/api
+        insecure: yes
+        username: admin@internal
+        password: secret_password
+    - name: Activating host = RHVH1
+      ovirt_host:
+        auth: "{{ ovirt_auth }}"
+        state: present
+        name: rhvh1.example.com
+    - name: Activating host = RHVH2
+      ovirt_host:
+        auth: "{{ ovirt_auth }}"
+        state: present
+        name: rhvh2.example.com
+    - name: Activating host = RHVH3
+      ovirt_host:
+        auth: "{{ ovirt_auth }}"
+        state: present
+        name: rhvh3.example.com
+    - name: Activating host = RHVH5
+      ovirt_host:
+        auth: "{{ ovirt_auth }}"
+        state: present
+        name: rhvh5.example.com
+    - name: Cleanup RHV auth token
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"

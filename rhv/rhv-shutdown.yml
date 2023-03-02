@@ -1,0 +1,19 @@
+---
+- name: Shutdown RHV environment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars_files:
+    - secret-vars.yml
+
+  vars:
+    engine_url: https://rhvm.tonneson.home/ovirt-engine/api
+    engine_user: admin@internal
+    engine_cafile: /etc/pki/ovirt-engine/ca.pem
+
+  roles:
+    - shutdown_env
+
+  collections:
+    - ovirt.ovirt
