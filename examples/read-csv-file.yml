@@ -1,0 +1,14 @@
+---
+- name: Read values from CSV file
+  hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Print fields
+      ansible.builtin.debug:
+        msg:
+          - "First Field = {{ item[0] }}"
+          - "Second Field = {{ item[1] }}"
+      loop:
+        - "{{ lookup('ansible.builtin.csvfile', server, file='/tmp/test.csv', delimiter=',') }}"

@@ -1,0 +1,10 @@
+---
+- name: Start a Windows Service
+  hosts: all
+
+  tasks:
+    - name: Set service startup mode to auto and ensure it is started
+      ansible.windows.win_service:
+        name: spooler
+        start_mode: auto
+        state: started
