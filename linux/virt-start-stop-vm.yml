@@ -6,7 +6,7 @@
 
   tasks:
   - name: start vm
-    virt:
+    community.libvirt.virt:
       name: "{{ vm_to_start }}"
       state: "{{ vm_state | default ('running' }}"
       uri: "{{ libvirt_uri | default ()'qemu:///system') }}"

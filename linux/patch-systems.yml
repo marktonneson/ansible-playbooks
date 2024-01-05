@@ -6,7 +6,7 @@
         patch_display_patch_output: true
       block:
         - name: "Update packages"
-          yum:
+          ansible.builtin.package:
             name: "{{ patch_pkgs | default('*') }}"
             state: "latest"
             update_cache: "yes"
@@ -17,7 +17,7 @@
             - "Reboot RHEL 6 after patching"
 
         - name: "Output collected yum update output"
-          debug:
+          ansible.builtin.debug:
             var: "patch_yum_results.results"
           when: "patch_display_patch_output"
 
@@ -50,7 +50,7 @@
         # For testing whether or not we need a reboot or service restart
         #   we need yum-utils to utilize the needs-restarting utility
         - name: "Ensure yum-utils is installed"
-          yum:
+          ansible.builtin.package:
             name: "yum-utils"
             state: "present"
           register: "patch_utils_installed"
@@ -58,7 +58,7 @@
           until: "patch_utils_installed is succeeded"
 
         - name: "Update packages"
-          yum:
+          ansible.builtin.package:
             name: "{{ patch_pkgs | default('*') }}"
             state: "latest"
             update_cache: "yes"
@@ -67,7 +67,7 @@
           until: "patch_yum_results is succeeded"
 
         - name: "Check if services need restarting"
-          command: 'needs-restarting -s'
+          ansible.builtin.command: 'needs-restarting -s'
           changed_when: "needs_service_restart.stdout_lines | length > 0"
           register: "needs_service_restart"
           notify:
@@ -75,7 +75,7 @@
           when: 'not patch_never_restart_svc'
 
         - name: "Check if reboot is required"
-          command: 'needs-restarting -r'
+          ansible.builtin.command: 'needs-restarting -r'
           changed_when: "needs_reboot.rc == 1"
           failed_when: "needs_reboot.rc > 1"
           register: "needs_reboot"
@@ -84,7 +84,7 @@
           when: 'not patch_never_reboot'
 
         - name: "Output collected yum update output"
-          debug:
+          ansible.builtin.debug:
             var: "patch_yum_results.results"
           when: "patch_display_patch_output"
       when:
@@ -100,7 +100,7 @@
         # For testing whether or not we need a reboot or service restart
         #   we need yum-utils to utilize the needs-restarting utility
         - name: "Ensure yum-utils is installed"
-          yum:
+          ansible.builtin.package:
             name: "yum-utils"
             state: "present"
           register: "patch_utils_installed"
@@ -108,7 +108,7 @@
           until: "patch_utils_installed is succeeded"
 
         - name: "Update packages"
-          yum:
+          ansible.builtin.package:
             name: "{{ patch_pkgs | default('*') }}"
             state: "latest"
             update_cache: "yes"
@@ -117,7 +117,7 @@
           until: "patch_yum_results is succeeded"
 
         - name: "Check if services need restarting"
-          command: 'needs-restarting -s'
+          ansible.builtin.command: 'needs-restarting -s'
           changed_when: "needs_service_restart.stdout_lines | length > 0"
           register: "needs_service_restart"
           notify:
@@ -125,7 +125,7 @@
           when: 'not patch_never_restart_svc'
 
         - name: "Check if reboot is required"
-          command: 'needs-restarting -r'
+          ansible.builtin.command: 'needs-restarting -r'
           changed_when: "needs_reboot.rc == 1"
           failed_when: "needs_reboot.rc > 1"
           register: "needs_reboot"
@@ -134,7 +134,7 @@
           when: 'not patch_never_reboot'
 
         - name: "Output collected yum update output"
-          debug:
+          ansible.builtin.debug:
             var: "patch_yum_results.results"
           when: "patch_display_patch_output"
       when:
@@ -143,7 +143,7 @@
 
   handlers:
     - name: "Restart required services"
-      service:
+      ansible.builtin.service:
         name: "{{ item }}"
         state: "restarted"
       when:
@@ -153,12 +153,12 @@
       with_items: "{{ needs_service_restart.stdout_lines }}"
 
     - name: "Reboot after patching"
-      reboot:
+      ansible.builtin.reboot:
         msg: "{{ patch_reboot_message | default('Rebooting due to patching.') }}"
       when:
         - 'needs_reboot.rc == 1'
         - 'not patch_never_reboot'
 
     - name: "Reboot RHEL 6 after patching"
-      reboot:
+      ansible.builtin.reboot:
         msg: "{{ patch_reboot_message | default('Rebooting due to patching.') }}"

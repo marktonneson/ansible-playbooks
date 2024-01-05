@@ -5,7 +5,7 @@
     - patch_reboot_message: 'Rebooting due to patching.'
   tasks:
     - name: "Reboot servers"
-      reboot:
+      ansible.builtin.reboot:
         msg: "{{ patch_reboot_message }}"
       when:
         - 'ansible_os_family == "RedHat"'
