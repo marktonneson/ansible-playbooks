@@ -4,16 +4,16 @@
 
   tasks:
    - name: stop iis service
-     win_service:
+     ansible.windows.win_service:
        name: W3Svc
        state: stopped
 
    - name: remove iis
-     win_feature:
+     ansible.windows.win_feature:
        name: Web-Server
        state: present
 
    - name: remove index.html
-     win_file:
+     ansible.windows.win_file:
        path: C:\Inetpub\wwwroot\index.html
        state: absent
