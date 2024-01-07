@@ -13,7 +13,7 @@
 
   tasks:
     - name: Start VMs
-      ovirt_vm:
+      ovirt.ovirt.ovirt_vm:
         auth:
           url: "{{ engine_url }}"
           username: "{{ engine_user }}"
