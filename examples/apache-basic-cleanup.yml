@@ -8,21 +8,21 @@
       - mod_wsgi
   tasks:
     - name: remove site-enabled directory
-      file:
+      ansible.builtin.file:
         name: /etc/httpd/conf/sites-enabled
         state: absent
 
     - name: remove httpd.conf
-      file: 
+      ansible.builtin.file: 
         name: /etc/httpd/conf/httpd.conf
         state: absent
 
     - name: remove index.html
-      file:
+      ansible.builtin.file:
         name: /var/www/html/index.html
         state: absent
     - name: remove httpd packages
-      yum:
+      ansible.builtin.yum:
         name: "{{ item }}"
         state: absent
       with_items: "{{ httpd_packages }}"

@@ -5,12 +5,12 @@
 
   tasks:
     - name: stop httpd
-      service:
+      ansible.builtin.service:
         name: httpd
         state: stopped
 
     - name: remove apache
-      yum:
+      ansible.builtin.yum:
         name: httpd
         state: absent
 

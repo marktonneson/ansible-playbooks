@@ -1,4 +1,4 @@
----
+--
 - name: Start a Windows Service
   hosts: all
 
