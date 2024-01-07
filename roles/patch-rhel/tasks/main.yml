@@ -4,7 +4,7 @@
     # For testing whether or not we need a reboot or service restart
     #   we need yum-utils to utilize the needs-restarting utility
     - name: "Ensure yum-utils is installed"
-      yum:
+      ansible.builtin.yum:
         name: "yum-utils"
         state: "present"
       register: "patch_utils_installed"
@@ -12,7 +12,7 @@
       until: "patch_utils_installed is succeeded"
 
     - name: "Update packages"
-      yum:
+      ansible.builtin.yum:
         name: "{{ patch_pkgs | default('*') }}"
         state: "latest"
         update_cache: "yes"
@@ -21,7 +21,7 @@
       until: "patch_yum_results is succeeded"
 
     - name: "Check if services need restarting"
-      command: 'needs-restarting -s'
+      ansible.builtin.command: 'needs-restarting -s'
       changed_when: "needs_service_restart.stdout_lines | length > 0"
       register: "needs_service_restart"
       notify:
@@ -29,7 +29,7 @@
       when: 'not patch_never_restart_svc'
 
     - name: "Check if reboot is required"
-      command: 'needs-restarting -r'
+      ansible.builtin.command: 'needs-restarting -r'
       changed_when: "needs_reboot.rc == 1"
       failed_when: "needs_reboot.rc > 1"
       register: "needs_reboot"
@@ -38,12 +38,12 @@
       when: 'not patch_never_reboot'
 
     - name: Debug needs_reboot
-      debug:
+      ansible.builtin.debug:
         msg: "needs_reboot.rc = {{ needs_reboot.rc }} "
         verbosity: 2
 
     - name: "Output collected yum update output"
-      debug:
+      ansible.builtin.debug:
         var: "patch_yum_results.results"
       when: "patch_display_patch_output"
   when:

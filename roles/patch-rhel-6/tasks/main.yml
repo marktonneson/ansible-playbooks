@@ -2,7 +2,7 @@
 - name: "Patch RHEL 6 Servers"
   block:
     - name: "Update packages"
-      yum:
+      ansible.builtin.yum:
         name: "{{ patch_pkgs | default('*') }}"
         state: "latest"
         update_cache: "yes"
@@ -13,7 +13,7 @@
         - "Reboot RHEL 6 after patching"
 
     - name: "Output collected yum update output"
-      debug:
+      ansible.builtin.debug:
         var: "patch_yum_results.results"
       when: "patch_display_patch_output"
 
