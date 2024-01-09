@@ -2,6 +2,7 @@
 - name: Publish and promote content views
   hosts: "{{ localhost | default ('satellite.tonneson.home') }}"
   gather_facts: no
+  ignore_errors: yes
 
   #vars_files:
     # Contains value for vault_admin_password
