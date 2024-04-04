@@ -28,13 +28,13 @@
       loop:
 
     - name: cmd _when & register
-      command: 'run_this'
+      ansible.builtin.command: 'run_this'
       changed_when: "run_this_stdout.rc == 1"
       failed_when: "run_this_stdout.rc > 1"
       register: "run_this_stdout"
 
     - name: smoke test check for http
-      uri:
+      ansible.builtin.uri:
         url: http://localhost/myapp
         return_content: yes
       register: result
@@ -44,7 +44,7 @@
 
     - name: example to validate vars or values, plus when positioning
       when: my_param is defined
-      assert:
+      ansible.builtin.assert:
         that:
           - my_param <= 100
           - my_param >= 0

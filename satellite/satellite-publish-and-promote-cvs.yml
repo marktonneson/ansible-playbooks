@@ -2,6 +2,7 @@
 - name: Publish and promote content views
   hosts: "{{ localhost | default ('satellite.tonneson.home') }}"
   gather_facts: no
+  ignore_errors: yes
 
   #vars_files:
     # Contains value for vault_admin_password
@@ -32,9 +33,11 @@
         - cv-RHEL6
         - cv-RHEL7
         - cv-RHEL8
+        - cv-RHEL9
         - ccv-RHEL6-plus-SatClient
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
+        - ccv-RHEL9-plus-SatClient
 
     - name: "Promote content view version in Dev (n-1) is moved to QA"
       redhat.satellite.content_view_version:
@@ -52,9 +55,11 @@
         - cv-RHEL6
         - cv-RHEL7
         - cv-RHEL8
+        - cv-RHEL9
         - ccv-RHEL6-plus-SatClient
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
+        - ccv-RHEL9-plus-SatClient
 
     - name: "Publish a content view and promote that version to Library & Dev, not idempotent"
       redhat.satellite.content_view_version:
@@ -72,6 +77,7 @@
         - cv-RHEL6
         - cv-RHEL7
         - cv-RHEL8
+        - cv-RHEL9
 
     - name: "Promote CCV version to Dev, auto-published via previous task"
       redhat.satellite.content_view_version:
@@ -89,3 +95,4 @@
         - ccv-RHEL6-plus-SatClient
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
+        - ccv-RHEL9-plus-SatClient

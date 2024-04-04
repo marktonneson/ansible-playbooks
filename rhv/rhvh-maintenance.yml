@@ -4,13 +4,13 @@
   gather_facts: no
   tasks:
     - name: Login to RHVM
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         url: https://rhvm.tonneson.home/ovirt-engine/api
         insecure: yes
         username: admin@internal
         password: secret_password
     - name: Set RHVH to maintenance
-      ovirt_host:
+      ovirt.ovirt.ovirt_host:
         auth: "{{ ovirt_auth }}"
         state: maintenance
         name: "{{ item }}"
@@ -21,6 +21,6 @@
         - rhvh3.tonneson.home
         - rhvh5.tonneson.home
     - name: Cleanup RHV auth token
-      ovirt_auth:
+      ovirt.ovirt.ovirt_auth:
         state: absent
         ovirt_auth: "{{ ovirt_auth }}"

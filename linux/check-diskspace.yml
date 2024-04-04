@@ -1,9 +1,9 @@
 ---
 - name: "Monitor disk space"
   hosts: "{{ satellite_group_name | default ('all') }}"
-  become: yes
-  ignore_unreachable: yes
-  gather_facts: no
+  become: true
+  ignore_unreachable: true
+  gather_facts: false
   vars:
     warn_threshold: 0.15
     warn_threshold_text: "85%"
@@ -12,11 +12,11 @@
 
   tasks:
      - name: Collect only facts needed to check disk space
-       setup: filter=ansible_mounts
-       ignore_unreachable: yes
+       ansible.builtin.setup: filter=ansible_mounts
+       ignore_unreachable: true
 
      - name: Ensure that free space on each mountpoint is greater than warn_threshold
-       assert:
+       ansible.builtin.assert:
          that:
            - mount.size_available > mount.size_total|float * warn_threshold
          fail_msg: "WARNING = Disk space on {{ inventory_hostname }} mount {{ item.mount }} has reached {{ warn_threshold_text }}"
@@ -27,7 +27,7 @@
          - "{{ ansible_mounts }}"
 
      - name: Ensure that free space on each mountpoint is greater than critical_threshold
-       assert:
+       ansible.builtin.assert:
          that:
            - mount.size_available > mount.size_total|float * critical_threshold
          fail_msg: "WARNING = Disk space on {{ inventory_hostname }} mount {{ item.mount }} has reached {{ critical_threshold_text }}"

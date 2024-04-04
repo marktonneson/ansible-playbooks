@@ -1,6 +1,6 @@
 ---
 - name: Download {{ dl_url }} to {{ dl_dest }}
-  get_url:
+  ansible.builtin.get_url:
     url: '{{ dl_url }}'
     dest: '{{ dl_dest }}'
     mode: '{{ dl_mode }}'

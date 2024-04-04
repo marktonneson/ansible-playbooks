@@ -22,12 +22,12 @@
       when: ansible_fact == 'value'
 
     - name: debug example
-      debug:
+      ansible.builtin.debug:
         msg: 'This is the output'
         verbosity: 2
 
   handlers:
     - name: my_handler
-      service:
+      ansible.builtin.service:
         name: value
         state: restarted

@@ -1,6 +1,6 @@
 ---
 - name: "Restart required services"
-  service:
+  ansible.builtin.service:
     name: "{{ item }}"
     state: "restarted"
   when:
@@ -10,7 +10,7 @@
   with_items: "{{ needs_service_restart.stdout_lines }}"
 
 - name: "Reboot after patching"
-  reboot:
+  ansible.builtin.reboot:
     msg: "{{ patch_reboot_message | default('Rebooting due to patching.') }}"
   when:
     - 'needs_reboot.rc == 1'

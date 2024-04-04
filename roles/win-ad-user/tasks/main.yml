@@ -1,13 +1,13 @@
 # tasks file for roles/win_ad_user
 - name: Create windows domain group
-  win_domain_group:
+  ansible.windows.win_domain_group:
     name: "{{ item.group_name }}"
     scope: "{{ item.group_scope }}"
     state: present
   loop: "{{ user_info }}"
 
 - name: Create AD User
-  win_domain_user:
+  ansible.windows.win_domain_user:
     name: "{{ item.name }}"
     firstname: "{{item.firstname }}"
     surname: "{{ item.surname }}"

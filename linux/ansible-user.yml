@@ -7,7 +7,7 @@
 
   tasks:
     - name: User ansible-user exists
-      user:
+      ansible.builtin.user:
         name: ansible-user
         uid: 4321
         state: present
@@ -15,13 +15,13 @@
         password: $6$sk/Hsd.G$jNGUF7jVtQzZSCr.VB2MWZxdG4bbx2A7afRY6HLZeKh4S0gKGQ5y1MGbQhoW.pgfKcJd6z6znsaIIXXFQwH6m.
 
     - name: Ensure key is in ansible-user's ~/.ssh/authorized_hosts
-      authorized_key:
+      ansible.posix.authorized_key:
         user: ansible-user
         state: present
         key: http://vbox.tonneson.home/pub/ansible-user.key
 
     - name: Modify sudo config to allow ansible-user sudo without a password
-      copy:
+      ansible.builtin.copy:
         content: "ansible-user ALL=(ALL) NOPASSWD:ALL"
         dest: /etc/sudoers.d/ansible
         mode: 0440

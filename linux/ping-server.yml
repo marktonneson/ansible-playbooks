@@ -4,5 +4,5 @@
   
   tasks:
     - name: Print a message
-      debug:
+      ansible.builtin.debug:
         msg: Success!

@@ -1,12 +1,24 @@
 ---
 - name: "Start libvirt machine"
-  hosts: "{{ satellite_group_name | default ('vbox') }}"
+  #  hosts: "{{ satellite_group_name | default ('vbox') }}"
+  # use when testing on local machine
+  #hosts: localhost
+  # use when testing EE, pass inventory via -i
+  hosts: all
+  # use when testing on single machine with ansible-playbook
+  # also use -i localhost,
+  # connection: local
   become: yes
   gather_facts: no
 
   tasks:
   - name: start vm
-    virt:
-      name: "{{ vm_to_start }}"
-      state: "{{ vm_state | default ('running' }}"
-      uri: "{{ libvirt_uri | default ()'qemu:///system') }}"
+    community.libvirt.virt:
+      name: "{{ vm_to_control | default ('fedora') }}"
+      state: "{{ vm_state | default ('running') }}"
+#      uri: "{{ libvirt_uri | default ('qemu:///system') }}"
+    register: vm_state_results
+    until: "vm_state_results is success"
+    retries: 15
+    delay: 2
+#      delegate_to: localhost

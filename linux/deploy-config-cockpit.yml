@@ -6,18 +6,18 @@
   - name: Install and configure Cockpit
     block:
       - name: Install Cockpit
-        yum:
+        ansible.builtin.package:
           name: cockpit
           state: present
 
       - name: Enable cockpit
-        service:
+        ansible.builtin.service:
           name: cockpit.socket
           enabled: yes
         notify: restart_cockpit
 
       - name: Enable firewall rule
-        firewalld:
+        ansible.posix.firewalld:
           service: cockpit
           permanent: yes
           immediate: yes
@@ -29,6 +29,6 @@
       - ansible_distribution_major_version != '6'
   handlers:
     - name: restart_cockpit
-      service:
+      ansible.builtin.service:
         name: cockpit
         state: restarted

@@ -1,4 +1,4 @@
 ---
 - name: "Reboot RHEL 6 after patching"
-  reboot:
+  ansible.builtin.reboot:
     msg: "{{ patch_reboot_message }}"

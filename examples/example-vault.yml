@@ -14,5 +14,5 @@
     - secret-vars.yml
   tasks:
     - name: Output
-      debug:
+      ansible.builtin.debug:
         msg: "{{ password }}"
