@@ -1,0 +1,8 @@
+---
+- name: Run script passed by var = script_to_run
+  hosts: all
+
+  tasks:
+    - name: Run this script = "{{ script_to_run }}"
+      ansible.builtin.script:
+        cmd: "{{ script_to_run }}"
