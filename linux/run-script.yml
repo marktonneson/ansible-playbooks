@@ -7,7 +7,7 @@
     - name: "Run this script = {{ script_to_run }}"
       ansible.builtin.shell:
         cmd: "{{ script_to_run }}"
-      resgister: shell_results
+      register: shell_results
 
     - name: Show results
       ansible.builtin.debug:
