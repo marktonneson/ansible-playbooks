@@ -4,7 +4,7 @@
   gather_facts: "{{ boolean_gather_facts | default ('false') }}"
 
   tasks:
-    - name: Run this script = "{{ script_to_run }}"
+    - name: "Run this script = {{ script_to_run }}"
       ansible.builtin.shell:
         cmd: "{{ script_to_run }}"
       resgister: shell_results
