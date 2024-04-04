@@ -1,8 +1,9 @@
 ---
 - name: Run script passed by var = script_to_run
   hosts: all
+  gather_facts: "{{ boolean_gather_facts | default ('false') }}"
 
   tasks:
     - name: Run this script = "{{ script_to_run }}"
-      ansible.builtin.script:
+      ansible.builtin.shell:
         cmd: "{{ script_to_run }}"
