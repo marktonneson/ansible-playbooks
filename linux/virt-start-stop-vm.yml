@@ -19,6 +19,6 @@
         uri: "{{ libvirt_uri | default ('qemu:///system') }}"
       register: vm_state_results
       until: "vm_state_results is success"
-      retries: 15
+      retries: 5
       delay: 2
 #      delegate_to: localhost
