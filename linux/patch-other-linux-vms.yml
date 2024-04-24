@@ -5,10 +5,23 @@
   gather_facts: yes
 
   tasks:
-    - name: "Patch RHEL-based systems"
+    - name: "Patch systems that work with package"
       ansible.builtin.package:
         name: '*'
         state: latest
+      when: ansible_facts['distribution'] != "FreeBSD" or ansible_facts['os_family'] != "Suse"
+
+    - name: "Patch FreeBSD"
+      community.general.pkgng:
+        name: "*"
+        state: latest
+      when: ansible_facts['distribution'] == "FreeBSD"
+      
+    - name: "Patch Solaris derivitives"
+      community.general.zypper:
+        name: '*'
+        state: latest
+      when: ansible_facts['os_family'] == "Suse"
 
     - name: "Reboot system"
       ansible.builtin.reboot:
