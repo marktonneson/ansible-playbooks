@@ -9,20 +9,26 @@
       ansible.builtin.package:
         name: '*'
         state: latest
-      when: ansible_facts['distribution'] != "FreeBSD" or ansible_facts['os_family'] != "Suse"
+      when: ansible_facts['os_family'] == "RedHat"
 
     - name: "Patch FreeBSD"
       community.general.pkgng:
         name: "*"
         state: latest
-      when: ansible_facts['distribution'] == "FreeBSD"
+      when: ansible_facts['os_family'] == "FreeBSD"
       
-    - name: "Patch Solaris derivitives"
+    - name: "Patch SuSE"
       community.general.zypper:
         name: '*'
         state: latest
       when: ansible_facts['os_family'] == "Suse"
 
+    - name: "Patch Slackware"
+      community.general.slackpkg:
+        name: '*'
+        state: latest
+      when: ansible_facts['os_family'] == "Slackware"
+    
     - name: "Reboot system"
       ansible.builtin.reboot:
 
