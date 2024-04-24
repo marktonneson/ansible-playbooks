@@ -24,9 +24,19 @@
       when: ansible_facts['os_family'] == "Suse"
 
     - name: "Patch Slackware"
-      community.general.slackpkg:
-        name: '*'
-        state: latest
+      block:
+        - name: "Run slackpkg update"
+          ansible.builtin.shell:
+            cmd: slackpkg update
+        - name: "Run slackpkg install-new"
+          ansible.builtin.shell:
+            cmd: slackpkg install-new
+        - name: "Run slackpkg upgrade-all"
+          ansible.builtin.shell:
+            cmd: slackpkg upgrade-all
+        - name: "Run slackpkg clean-system"
+          ansible.builtin.shell:
+            cmd: slackpkg clean-system
       when: ansible_facts['os_family'] == "Slackware"
     
     - name: "Reboot system"
