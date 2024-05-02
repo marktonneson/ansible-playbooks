@@ -28,9 +28,9 @@
         - name: "Run slackpkg update"
           ansible.builtin.shell:
             cmd: slackpkg update
-        - name: "Run slackpkg install-new"
-          ansible.builtin.shell:
-            cmd: slackpkg install-new
+#        - name: "Run slackpkg install-new"
+#          ansible.builtin.shell:
+#            cmd: slackpkg install-new
         - name: "Run slackpkg upgrade-all"
           ansible.builtin.shell:
             cmd: slackpkg upgrade-all
