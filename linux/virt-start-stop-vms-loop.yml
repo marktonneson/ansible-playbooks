@@ -12,4 +12,4 @@
       until: "vm_state_results is success"
       retries: 5
       delay: 2
-      loop: "{{ groups['group_to_control'] }}"
+      loop: "{{ groups['libvirt'] }}"
