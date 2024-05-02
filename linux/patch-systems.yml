@@ -196,7 +196,7 @@
         msg: "{{ patch_reboot_message | default('Rebooting due to patching.') }}"
       when:
 #        - 'needs_reboot.rc == 1'
-        - 'not patch_never_reboot'
+#        - 'not patch_never_reboot'
 
     - name: "Reboot RHEL 6 after patching"
       ansible.builtin.reboot:
