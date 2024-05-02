@@ -55,8 +55,8 @@
 
        - name: "Check if services need restarting"
          ansible.builtin.command: 'needs-restarting -s'
-         changed_when: "needs_service_restart.stdout_lines | length > 0"
          register: "needs_service_restart"
+         changed_when: "needs_service_restart.stdout_lines | length > 0"
          notify:
            - "Restart required services"
          when: 'not patch_never_restart_svc'
@@ -105,8 +105,8 @@
 
         - name: "Check if services need restarting"
           ansible.builtin.command: 'needs-restarting -s'
-          changed_when: "needs_service_restart.stdout_lines | length > 0"
           register: "needs_service_restart"
+          changed_when: "needs_service_restart.stdout_lines | length > 0"
           notify:
             - "Restart required services"
           when: 'not patch_never_restart_svc'
@@ -155,8 +155,8 @@
 
         - name: "Check if services need restarting"
           ansible.builtin.command: 'needs-restarting -s'
-          changed_when: "needs_service_restart.stdout_lines | length > 0"
           register: "needs_service_restart"
+          changed_when: "needs_service_restart.stdout_lines | length > 0"
           notify:
             - "Restart required services"
           when: 'not patch_never_restart_svc'
