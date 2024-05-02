@@ -5,7 +5,7 @@
       vars:
         patch_display_patch_output: true
       block:
-        - name: "Update packages"
+        - name: "RHEL6: Update packages"
           ansible.builtin.package:
             name: "{{ patch_pkgs | default('*') }}"
             state: "latest"
@@ -16,7 +16,7 @@
           notify:
             - "Reboot RHEL 6 after patching"
 
-        - name: "Output collected yum update output"
+        - name: "RHEL6: Output collected yum update output"
           ansible.builtin.debug:
             var: "patch_yum_results.results"
           when: "patch_display_patch_output"
@@ -25,18 +25,13 @@
         - 'ansible_os_family == "RedHat"'
         - 'ansible_distribution_major_version == "6"'
 
-    #
-    # Shamelessly stole this entire section from ahuffman.patching
-    #
     - name: "Patch RHEL 7 Servers"
       vars:
         patch_display_patch_output: true
-        patch_never_reboot: false
-        patch_never_restart_svc: false
+        patch_reboot_server: true
+        patch_restart_services: true
       block:
-        # For testing whether or not we need a reboot or service restart we need yum-utils
-        #   installed to utilize the needs-restarting utility
-       - name: "Ensure yum-utils is installed"
+       - name: "RHEL7: Ensure yum-utils is installed"
          ansible.builtin.package:
            name: "yum-utils"
            state: "present"
@@ -44,7 +39,7 @@
          retries: "3"
          until: "patch_utils_installed is succeeded"
     
-       - name: "Update packages"
+       - name: "RHEL7: Update packages"
          ansible.builtin.package:
            name: "{{ patch_pkgs | default('*') }}"
            state: "latest"
@@ -53,24 +48,24 @@
          retries: "3"
          until: "patch_yum_results is succeeded"
 
-       - name: "Check if services need restarting"
+       - name: "RHEL7: Check if services need restarting"
          ansible.builtin.command: 'needs-restarting -s'
          register: "needs_service_restart"
-         changed_when: "needs_service_restart.stdout_lines | length > 0"
+         changed_when: "needs_service_restart.rc != 0"
          notify:
            - "Restart required services"
-         when: 'not patch_never_restart_svc'
+         when: 'patch_restart_services'
 
-       - name: "Check if reboot is required"
+       - name: "RHEL7: Check if reboot is required"
          ansible.builtin.command:  'needs-restarting -r'
          register: "needs_reboot"
          changed_when: "needs_reboot.rc == 1"
          failed_when: "needs_reboot.rc > 1"
          notify:
            - "Reboot after patching"
-         when: 'not patch_never_reboot'
+         when: 'patch_reboot_server'
 
-       - name: "Output collected yum update output"
+       - name: "RHEL7: Output collected yum update output"
          ansible.builtin.debug:
            var: "patch_yum_results.results"
          when: "patch_display_patch_output"
@@ -81,12 +76,10 @@
     - name: "Patch RHEL 8 Servers"
       vars:
         patch_display_patch_output: true
-        patch_never_reboot: false
-        patch_never_restart_svc: false
+        patch_reboot_server: true
+        patch_restart_services: true
       block:
-        # For testing whether or not we need a reboot or service restart
-        #   we need yum-utils to utilize the needs-restarting utility
-        - name: "Ensure yum-utils is installed"
+        - name: "RHEL8: Ensure yum-utils is installed"
           ansible.builtin.package:
             name: "yum-utils"
             state: "present"
@@ -94,7 +87,7 @@
           retries: "3"
           until: "patch_utils_installed is succeeded"
 
-        - name: "Update packages"
+        - name: "RHEL8: Update packages"
           ansible.builtin.package:
             name: "{{ patch_pkgs | default('*') }}"
             state: "latest"
@@ -103,24 +96,24 @@
           retries: "3"
           until: "patch_yum_results is succeeded"
 
-        - name: "Check if services need restarting"
+        - name: "RHEL8: Check if services need restarting"
           ansible.builtin.command: 'needs-restarting -s'
           register: "needs_service_restart"
           changed_when: "needs_service_restart.rc != 0"
           notify:
             - "Restart required services"
-          when: 'not patch_never_restart_svc'
+          when: 'patch_restart_services'
 
-        - name: "Check if reboot is required"
+        - name: "RHEL8: Check if reboot is required"
           ansible.builtin.command: 'needs-restarting -r'
           register: "needs_reboot"
           changed_when: "needs_reboot.rc == 1"
           failed_when: "needs_reboot.rc > 1"
           notify:
             - "Reboot after patching"
-          when: 'not patch_never_reboot'
+          when: 'patch_reboot_server'
 
-        - name: "Output collected yum update output"
+        - name: "RHEL8: Output collected yum update output"
           ansible.builtin.debug:
             var: "patch_yum_results.results"
           when: "patch_display_patch_output"
@@ -131,12 +124,10 @@
     - name: "Patch RHEL 9 Servers"
       vars:
         patch_display_patch_output: true
-        patch_never_reboot: false
-        patch_never_restart_svc: false
+        patch_reboot_server: true
+        patch_restart_services: true
       block:
-        # For testing whether or not we need a reboot or service restart
-        #   we need yum-utils to utilize the needs-restarting utility
-        - name: "Ensure yum-utils is installed"
+        - name: "RHEL9: Ensure yum-utils is installed"
           ansible.builtin.package:
             name: "yum-utils"
             state: "present"
@@ -144,7 +135,7 @@
           retries: "3"
           until: "patch_utils_installed is succeeded"
 
-        - name: "Update packages"
+        - name: "RHEL9: Update packages"
           ansible.builtin.package:
             name: "{{ patch_pkgs | default('*') }}"
             state: "latest"
@@ -153,24 +144,24 @@
           retries: "3"
           until: "patch_yum_results is succeeded"
 
-        - name: "Check if services need restarting"
+        - name: "RHEL9: Check if services need restarting"
           ansible.builtin.command: 'needs-restarting -s'
           register: "needs_service_restart"
-          changed_when: "needs_service_restart.stdout_lines | length > 0"
+          changed_when: "needs_service_restart.rc != 0"
           notify:
             - "Restart required services"
-          when: 'not patch_never_restart_svc'
+          when: 'patch_restart_services'
 
-        - name: "Check if reboot is required"
+        - name: "RHEL9: Check if reboot is required"
           ansible.builtin.command: 'needs-restarting -r'
           register: "needs_reboot"
           changed_when: "needs_reboot.rc == 1"
           failed_when: "needs_reboot.rc > 1"
           notify:
             - "Reboot after patching"
-          when: 'not patch_never_reboot'
+          when: 'patch_reboot_server'
 
-        - name: "Output collected yum update output"
+        - name: "RHEL9: Output collected yum update output"
           ansible.builtin.debug:
             var: "patch_yum_results.results"
           when: "patch_display_patch_output"
@@ -184,19 +175,13 @@
         name: "{{ item }}"
         state: "restarted"
       when:
-        - 'needs_service_restart.stdout_lines | length > 0'
         - 'needs_reboot.rc != 1'
-        - 'not patch_never_restart_svc'
         - 'ansible_distribution_major_version != "6"'
       loop: "{{ needs_service_restart.stdout_lines }}"
-
 
     - name: "Reboot after patching"
       ansible.builtin.reboot:
         msg: "{{ patch_reboot_message | default('Rebooting due to patching.') }}"
-      when:
-#        - 'needs_reboot.rc == 1'
-#        - 'not patch_never_reboot'
 
     - name: "Reboot RHEL 6 after patching"
       ansible.builtin.reboot:
