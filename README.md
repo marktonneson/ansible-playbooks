@@ -1,2 +1,2 @@
 # ansible-playbooks
-Git repo for Ansible Tower to pull from
+Git repo for AAP to pull from
