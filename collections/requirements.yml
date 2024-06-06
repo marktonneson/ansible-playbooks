@@ -2,7 +2,6 @@
 # Collections from Ansible Galaxy
 collections:
   - name: redhatinsights.insights
-    version: latest
     source: https://galaxy.ansible.com
 
   - name: community.libvirt 
