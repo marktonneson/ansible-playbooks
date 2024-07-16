@@ -30,11 +30,9 @@
         lifecycle_environments:
           - Prod
       loop:
-        - cv-RHEL6
         - cv-RHEL7
         - cv-RHEL8
         - cv-RHEL9
-        - ccv-RHEL6-plus-SatClient
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
         - ccv-RHEL9-plus-SatClient
@@ -52,11 +50,9 @@
         lifecycle_environments:
           - QA
       loop:
-        - cv-RHEL6
         - cv-RHEL7
         - cv-RHEL8
         - cv-RHEL9
-        - ccv-RHEL6-plus-SatClient
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
         - ccv-RHEL9-plus-SatClient
@@ -74,7 +70,6 @@
           - Library
           - Dev
       loop:
-        - cv-RHEL6
         - cv-RHEL7
         - cv-RHEL8
         - cv-RHEL9
@@ -92,7 +87,6 @@
         lifecycle_environments:
           - Dev
       loop:
-        - ccv-RHEL6-plus-SatClient
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
         - ccv-RHEL9-plus-SatClient
