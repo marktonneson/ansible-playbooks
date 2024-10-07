@@ -25,18 +25,24 @@
 
     - name: "Patch Slackware"
       block:
-        - name: "Run slackpkg update"
-          ansible.builtin.shell:
-            cmd: slackpkg update
+#        - name: "Run slackpkg update"
+#          ansible.builtin.shell:
+#            cmd: slackpkg update
 #        - name: "Run slackpkg install-new"
 #          ansible.builtin.shell:
 #            cmd: slackpkg install-new
-        - name: "Run slackpkg upgrade-all"
-          ansible.builtin.shell:
-            cmd: slackpkg upgrade-all
-        - name: "Run slackpkg clean-system"
-          ansible.builtin.shell:
-            cmd: slackpkg clean-system
+#        - name: "Run slackpkg upgrade-all"
+#          ansible.builtin.shell:
+#            cmd: slackpkg upgrade-all
+#        - name: "Run slackpkg clean-system"
+#          ansible.builtin.shell:
+#            cmd: slackpkg clean-system
+#        - name: "Run LILO to update boot"
+#          ansible.builtin.shell:
+#            cmd: lilo
+        - name: "Slackware kinda sucks."
+          ansible.builtin.debug:
+            msg: "Slackware does not support unattended upgrades."
       when: ansible_facts['os_family'] == "Slackware"
     
     - name: "Reboot system"
