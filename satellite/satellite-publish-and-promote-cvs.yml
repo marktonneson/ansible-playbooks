@@ -17,7 +17,7 @@
     default_description: "Monthly - {{ now().strftime('%Y-%m-%d') }}"
 
   tasks:
-    - name: "Promote content view version in QA (n-2) is moved to Prod"
+    - name: "Promote CCVs in QA (n-2) to Prod"
       redhat.satellite.content_view_version:
         username: "{{ admin_username }}"
         password: "{{ admin_password }}"
@@ -35,7 +35,7 @@
         - ccv-RHEL9-plus-SatClient
         - ccv-RHEL10-plus-SatClient
 
-    - name: "Promote content view version in Dev (n-1) is moved to QA"
+    - name: "Promote CCVs Dev (n-1) to QA"
       redhat.satellite.content_view_version:
         username: "{{ admin_username }}"
         password: "{{ admin_password }}"
@@ -53,7 +53,24 @@
         - ccv-RHEL9-plus-SatClient
         - ccv-RHEL10-plus-SatClient
 
-    - name: "Publish a content view and promote that version to Library & Dev, not idempotent"
+    - name: "Publish RHEL CVs so CCVs pick up new version"
+      redhat.satellite.content_view_version:
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        content_view: "{{ item }}"
+        organization: "{{ org_to_target }}"
+        validate_certs: no
+        description: "{{ default_description }}"
+        lifecycle_environments:
+          - Library
+      loop:
+        - cv-RHEL7
+        - cv-RHEL8
+        - cv-RHEL9
+        - cv-RHEL10
+
+    - name: "Publish CCVs and promote that version to Dev"
       redhat.satellite.content_view_version:
         username: "{{ admin_username }}"
         password: "{{ admin_password }}"
