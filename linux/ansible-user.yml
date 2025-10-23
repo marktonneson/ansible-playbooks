@@ -28,7 +28,7 @@
         nopassword: true
         user: ansible-user
         validation: detect
-      when: ansible_facts['os_family'] <> "FreeBSD"
+      when: ansible_facts['os_family'] != "FreeBSD"
 
     - name: Accomodate differences with FreeBSD
       ansible.builtin.copy:
