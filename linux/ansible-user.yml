@@ -35,6 +35,6 @@
         dest: /usr/local/etc/sudoers.d/ansible
         mode: 0440
         owner: root
-        group: root
+        group: wheel
         validate: visudo -cf %s
       when: ansible_facts['os_family'] == "FreeBSD"
