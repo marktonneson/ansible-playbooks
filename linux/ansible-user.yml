@@ -28,11 +28,14 @@
         nopassword: true
         user: ansible-user
         validation: detect
-# Original below, changed to above to accomodate differences with FreeBSD
-#      ansible.builtin.copy:
-#        content: "ansible-user ALL=(ALL) NOPASSWD:ALL"
-#        dest: /etc/sudoers.d/ansible
-#        mode: 0440
-#        owner: root
-#        group: root
-#        validate: visudo -cf %s
+      when: ansible_facts['os_family'] <> "FreeBSD"
+
+    - name: Accomodate differences with FreeBSD
+      ansible.builtin.copy:
+        content: "ansible-user ALL=(ALL) NOPASSWD:ALL"
+        dest: /usr/local/etc/sudoers.d/ansible
+        mode: 0440
+        owner: root
+        group: root
+        validate: visudo -cf %s
+      when: ansible_facts['os_family'] == "FreeBSD"
