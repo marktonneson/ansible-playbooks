@@ -14,10 +14,10 @@
     admin_password: "{{ vault_admin_password }}"
     satellite_host: "{{ my_satellite | default ('satellite.tonneson.home') }}"
     org_to_target: "{{ my_organization | default ('Tonneson Lab') }}"
-    default_description: "Monthly Publishing"
+    default_description: "Monthly - {{ now().strftime('%Y-%m-%d') }}"
 
   tasks:
-    - name: "Promote content view version in QA (n-2) is moved to Prod"
+    - name: "Promote CCVs in QA (n-2) to Prod"
       redhat.satellite.content_view_version:
         username: "{{ admin_username }}"
         password: "{{ admin_password }}"
@@ -30,14 +30,12 @@
         lifecycle_environments:
           - Prod
       loop:
-        - cv-RHEL7
-        - cv-RHEL8
-        - cv-RHEL9
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
         - ccv-RHEL9-plus-SatClient
+        - ccv-RHEL10-plus-SatClient
 
-    - name: "Promote content view version in Dev (n-1) is moved to QA"
+    - name: "Promote CCVs Dev (n-1) to QA"
       redhat.satellite.content_view_version:
         username: "{{ admin_username }}"
         password: "{{ admin_password }}"
@@ -50,14 +48,29 @@
         lifecycle_environments:
           - QA
       loop:
-        - cv-RHEL7
-        - cv-RHEL8
-        - cv-RHEL9
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
         - ccv-RHEL9-plus-SatClient
+        - ccv-RHEL10-plus-SatClient
 
-    - name: "Publish a content view and promote that version to Library & Dev, not idempotent"
+    - name: "Publish RHEL CVs so CCVs pick up new version"
+      redhat.satellite.content_view_version:
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        content_view: "{{ item }}"
+        organization: "{{ org_to_target }}"
+        validate_certs: no
+        description: "{{ default_description }}"
+        lifecycle_environments:
+          - Library
+      loop:
+        - cv-RHEL7
+        - cv-RHEL8
+        - cv-RHEL9
+        - cv-RHEL10
+
+    - name: "Publish CCVs and promote that version to Dev"
       redhat.satellite.content_view_version:
         username: "{{ admin_username }}"
         password: "{{ admin_password }}"
@@ -70,23 +83,7 @@
           - Library
           - Dev
       loop:
-        - cv-RHEL7
-        - cv-RHEL8
-        - cv-RHEL9
-
-    - name: "Promote CCV version to Dev, auto-published via previous task"
-      redhat.satellite.content_view_version:
-        username: "{{ admin_username }}"
-        password: "{{ admin_password }}"
-        server_url: "https://{{ satellite_host }}"
-        content_view: "{{ item }}"
-        organization: "{{ org_to_target }}"
-        validate_certs: no
-        description: "{{ default_description }}"
-        current_lifecycle_environment: Library
-        lifecycle_environments:
-          - Dev
-      loop:
         - ccv-RHEL7-plus-SatClient
         - ccv-RHEL8-plus-SatClient
         - ccv-RHEL9-plus-SatClient
+        - ccv-RHEL10-plus-SatClient
