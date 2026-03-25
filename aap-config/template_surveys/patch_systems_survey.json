@@ -1,0 +1,51 @@
+{
+    "name": "",
+    "spec": [
+        {
+            "max": 1024,
+            "min": 0,
+            "type": "multiplechoice",
+            "choices": [
+                "True",
+                "False"
+            ],
+            "default": "True",
+            "required": true,
+            "variable": "patch_display_patch_output",
+            "new_question": true,
+            "question_name": "Display patch output?",
+            "question_description": ""
+        },
+        {
+            "max": 1024,
+            "min": 0,
+            "type": "multiplechoice",
+            "choices": [
+                "True",
+                "False"
+            ],
+            "default": "True",
+            "required": true,
+            "variable": "patch_never_reboot",
+            "new_question": true,
+            "question_name": "Prevent reboot, if required, after patching?",
+            "question_description": ""
+        },
+        {
+            "max": 1024,
+            "min": 0,
+            "type": "multiplechoice",
+            "choices": [
+                "True",
+                "False"
+            ],
+            "default": "False",
+            "required": true,
+            "variable": "patch_never_restart_svc",
+            "new_question": true,
+            "question_name": "Prevent service restart, if required, after patching?",
+            "question_description": ""
+        }
+    ],
+    "description": ""
+}

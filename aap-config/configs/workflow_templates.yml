@@ -1,0 +1,40 @@
+---
+controller_workflows:
+  - name: Workflow Patch Other Linux
+    organization: Default
+    inventory: Libvirt Linux Hosts
+    simplified_workflow_nodes:
+      - all_parents_must_converge: false
+        identifier: wf_Subtask Libvirt Stop VMs
+        unified_job_template: 
+          name: wf_Subtask Libvirt Stop VMs
+      - all_parents_must_converge: false
+        identifier: wf_Subtask Patch Other Linux
+        unified_job_template: 
+          name: wf_Subtask Patch Other Linux
+        always_nodes: 
+          - wf_Subtask Libvirt Stop VMs
+      - all_parents_must_converge: false
+        identifier: wf_Subtask Libvirt Start VMs
+        unified_job_template: 
+          name: wf_Subtask Libvirt Start VMs
+        success_nodes: 
+          - wf_Subtask Patch Other Linux
+
+  - name: Workflow Satellite CV Maintenance
+    organization: Default
+    inventory: Satellite Inventory
+    simplified_workflow_nodes:
+      - all_parents_must_converge: false
+        identifier: wf_Subtask Satellite Cleanup CVs
+        unified_job_template: wf_Subtask Satellite Cleanup CVs
+      - all_parents_must_converge: false
+        identifier: wf_Subtask Satellite Publish and Promote CVs
+        unified_job_template: wf_Subtask Satellite Publish and Promote CVs
+        success_nodes: 
+          - wf_Subtask Satellite Cleanup CVs
+      - all_parents_must_converge: false
+        identifier: wf_Subtask Test Satellite Connectivity Only
+        unified_job_template: wf_Subtask Test Satellite Connectivity Only
+        success_nodes: 
+          - wf_Subtask Satellite Publish and Promote CVs

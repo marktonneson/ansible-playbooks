@@ -1,0 +1,11 @@
+---
+controller_projects:
+  - name: "!My Github Repo"
+    organization: Default
+    scm_type: git
+    scm_url: git@github.com:marktonneson/ansible-playbooks.git
+    description: Pulls from my main repo
+    credential: My Github Credential
+    scm_clean: true
+    scm_update_on_launch: false
+    scm_delete_on_update: false

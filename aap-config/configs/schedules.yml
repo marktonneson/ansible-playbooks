@@ -1,0 +1,66 @@
+---
+controller_schedules:
+# Project schedules
+  - name: Daily 0500 GitHub Sync
+    unified_job_template: "!My Github Repo"
+    rrule: "DTSTART;TZID=America/New_York:20260313T050000 RRULE:FREQ=DAILY;INTERVAL=1;WKST=SU;BYDAY=MO,TU,WE,TH,FR"
+
+# Inventory schedules
+  - name: Daily 0600 Sat6 Inventory Sync
+    unified_job_template: satellite.tonneson.home
+    rrule: "DTSTART;TZID=America/New_York:20260313T060000 RRULE:FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR"
+
+# Job template schedules - Daily
+  - name: Daily 0700 vBox Root Key
+    unified_job_template: "Push Key vBox Root"
+    rrule: "DTSTART;TZID=America/New_York:20260313T070000 RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR"
+
+  - name: Daily 1200 Push Ansible User
+    unified_job_template: "Push Ansible-User"
+    rrule: "DTSTART;TZID=America/New_York:20260313T120000 RRULE:FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR"
+
+  - name: Daily 1330 Check disk space
+    unified_job_template: "Check disk space"
+    rrule: "DTSTART;TZID=America/New_York:20260313T133000 RRULE:FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR"
+
+  - name: Daily 1530 Push bash-prompt
+    unified_job_template: "Push File bash-prompt-default"
+    rrule: "DTSTART;TZID=America/New_York:20260313T153000 RRULE:FREQ=DAILY;INTERVAL=1;BYDAY=MO,TU,WE,TH,FR"
+
+# Job template schedules - Weekly
+  - name: Weekly Thu 1815 pi4 Backup
+    unified_job_template: "Run Script - Pi4 Backup"
+    rrule: "DTSTART;TZID=America/New_York:20260313T181500 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=TH"
+
+  - name: Weekly Wed 1815 Satellite Backup
+    unified_job_template: "Run Script - Satellite Backup"
+    rrule: "DTSTART;TZID=America/New_York:20260317T181500 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=WE;BYSECOND=0"
+
+  - name: Weekly Wed 0915 Sat Foreman Proxy Key
+    unified_job_template: "Push Key Satellite Foreman Proxy"
+    rrule: "DTSTART;TZID=America/New_York:20260313T091500 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=WE"
+
+  - name: Weekly Wed 1815 vBox Backup
+    unified_job_template: "Run Script - vBox Backup"
+    rrule: "DTSTART;TZID=America/New_York:20260318T181500 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=TU;BYSECOND=0"
+
+  - name: Weekly Wed 2015 vBox Vm Snapshots
+    unified_job_template: "Run Script - vBox Vm Snapshots"
+    rrule: "DTSTART;TZID=America/New_York:20260313T201500 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=WE"
+
+# Job template schedules - Monthly
+  - name: Monthly First Tue 0200 DEV Patching
+    unified_job_template: "Patch DEV Servers Automatically"
+    rrule: "DTSTART;TZID=America/New_York:20260407T020000 RRULE:FREQ=MONTHLY;INTERVAL=1;BYSETPOS=1;BYDAY=TU;BYSECOND=0"
+
+  - name: Monthly First Thu 0400 Patch Other Linux
+    unified_job_template: "Workflow Patch Other Linux"
+    rrule: "DTSTART;TZID=America/New_York:20260313T040000 RRULE:FREQ=MONTHLY;INTERVAL=1;BYSETPOS=1;BYDAY=TH"
+
+  - name: Monthly First Thu 2300 Sat CV Maintenance
+    unified_job_template: "Workflow Satellite CV Maintenance"
+    rrule: "DTSTART;TZID=America/New_York:20260402T230000 RRULE:FREQ=MONTHLY;INTERVAL=1;BYSETPOS=1;BYDAY=TH;BYSECOND=0"
+
+  - name: Monthly Third Wed 0215 Pi-hole Update
+    unified_job_template: "Run Script - Pi-hole Update"
+    rrule: "DTSTART;TZID=America/New_York:20260313T021500 RRULE:FREQ=MONTHLY;INTERVAL=1;BYSETPOS=3;BYDAY=WE"

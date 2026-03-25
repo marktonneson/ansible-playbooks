@@ -1,0 +1,18 @@
+---
+controller_inventories:
+  - name: Satellite Inventory
+    organization: Default
+    description: Testing
+  
+  - name: Linux Libvirt Hosts
+    organization: Default
+    description: Testing
+  
+  - name: Other Hosts
+    organization: Default
+    description: Testing
+  
+  - name: All Hosts
+    organization: Default
+    description: Testing
+  

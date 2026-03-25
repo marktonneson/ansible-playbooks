@@ -1,0 +1,299 @@
+---
+controller_templates:
+# Check only jobs, no surveys
+- name: Check Ansible User
+  job_type: check
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/ansible-user.yml
+  credentials:
+    - Root Password Credential
+  limit: "!foreman_hostcollection_ignore_hosts"
+  notification_templates_error:
+    - Email Custom
+
+# Run type jobs, no surveys
+- name: Check disk space
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/check-diskspace.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: "!foreman_hostcollection_ignore_hosts"
+  extra_vars:
+    satellite_group_name: all
+  notification_templates_started:
+  notification_templates_success:
+  notification_templates_error:
+    - Email Custom
+
+- name: Patch DEV Servers Automatically
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/check-diskspace.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: foreman_lifecycle_environment_dev
+  extra_vars:
+    satellite_group_name: all
+  notification_templates_started:
+    - Email Custom
+  notification_templates_success:
+    - Email Custom
+  notification_templates_error:
+    - Email Custom
+
+- name: Push Ansible-user
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/ansible-user.yml
+  credentials:
+    - Root Password Credential
+  limit: "!foreman_hostcollection_ignore_hosts"
+  notification_templates_error:
+    - Email Custom
+
+- name: Push Ansible-user - Prompt All
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/ansible-user.yml
+  credentials:
+    - Root Password Credential
+  limit: "!foreman_hostcollection_ignore_hosts"
+  ask_limit_on_launch: true
+  ask_inventory_on_launch: true
+  ask_credential_on_launch: true
+
+- name: Push File bash-prompt-default
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/download-file-using-role.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: "!foreman_hostcollection_ignore_hosts"
+  extra_vars:
+    dl_url: http://vbox.tonneson.home/pub/bash-prompt-default
+    dl_dest: /etc/sysconfig/bash-prompt-default
+    dl_owner: root
+    dl_mode: 755
+  notification_templates_error:
+    - Email Custom
+
+- name: Push File bash-prompt-default - Prompt All
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/download-file-using-role.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: "!foreman_hostcollection_ignore_hosts"
+  extra_vars:
+    dl_url: http://vbox.tonneson.home/pub/bash-prompt-default
+    dl_dest: /etc/sysconfig/bash-prompt-default
+    dl_owner: root
+    dl_mode: 755
+  ask_limit_on_launch: true
+  ask_inventory_on_launch: true
+  ask_credential_on_launch: true
+
+- name: Push Key Satellite Foreman Proxy
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/setup-auth-keys-using-role.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: "!foreman_hostcollection_ignore_hosts"
+  extra_vars:
+    key_file: http://vbox.tonneson.home/pub/foreman_proxy_satellite.key"
+  notification_templates_error:
+    - Email Custom
+
+- name: Push Key vBox Root
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/setup-auth-keys-using-role.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: "!foreman_hostcollection_ignore_hosts"
+  extra_vars:
+    key_file: http://vbox.tonneson.home/pub/root-vbox.key
+  notification_templates_error:
+    - Email Custom
+
+- name: Push Key vBox Root - Prompt All
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/setup-auth-keys-using-role.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: "!foreman_hostcollection_ignore_hosts"
+  extra_vars:
+    key_file: http://vbox.tonneson.home/pub/root-vbox.key
+  ask_limit_on_launch: true
+  ask_inventory_on_launch: true
+  ask_credential_on_launch: true
+
+- name: Run Script - Pi4 Backup
+  inventory: Other Hosts
+  project: "!My Github Repo"
+  playbook: linux/run-script.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: raspberrypi4.tonneson.home
+  extra_vars:
+    script_to_run: /usr/local/sbin/run-backup
+  notification_templates_started:
+    - Email Default
+  notification_templates_success:
+    - Email Default
+  notification_templates_error:
+    - Email Default
+
+- name: Run Script - Pi-hole Update
+  inventory: Other Hosts
+  project: "!My Github Repo"
+  playbook: linux/run-script.yml
+  credentials:
+    - Raspberry Pi User
+  become_enabled: true
+  limit: raspberrypi3.tonneson.home
+  extra_vars:
+    script_to_run: "/usr/local/bin/pihole -up"
+  notification_templates_started:
+    - Email Default
+  notification_templates_success:
+    - Email Default
+  notification_templates_error:
+    - Email Default
+
+- name: Run Script - Satellite Backup
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/run-script.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: satellite.tonneson.home
+  extra_vars:
+    script_to_run: /usr/local/sbin/satellite-backup.sh
+  notification_templates_started:
+    - Email Default
+  notification_templates_success:
+    - Email Default
+  notification_templates_error:
+    - Email Default
+
+- name: Run Script - vBox Backup
+  inventory: Other Hosts
+  project: "!My Github Repo"
+  playbook: linux/run-script.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: vbox.tonneson.home
+  extra_vars:
+    script_to_run: /usr/local/sbin/vbox-backup.sh
+  notification_templates_started:
+    - Email Default
+  notification_templates_success:
+    - Email Default
+  notification_templates_error:
+    - Email Default
+
+- name: Run Script - vBox Vm Snapshots
+  inventory: Other Hosts
+  project: "!My Github Repo"
+  playbook: linux/run-script.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: vbox.tonneson.home
+  extra_vars:
+    script_to_run: /usr/local/sbin/run-vm-snapshots.sh
+  notification_templates_started:
+    - Email Default
+  notification_templates_success:
+    - Email Default
+  notification_templates_error:
+    - Email Default
+
+# Workflow subtasks
+- name: wf_Subtask Libvirt Start VMs
+  inventory: Libvirt Linux Hosts
+  project: "!My Github Repo"
+  playbook: linux/virt-start-stop-vms-loop.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: vbox.tonneson.home
+
+- name: wf_Subtask Patch Other Linux
+  inventory: Libvirt Linux Hosts
+  project: "!My Github Repo"
+  playbook: linux/patch-other-linux-vms.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+    
+- name: wf_Subtask Libvirt Stop VMs
+  inventory: Libvirt Linux Hosts
+  project: "!My Github Repo"
+  playbook: linux/virt-start-stop-vms-loop.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  limit: vbox.tonneson.home
+  extra_vars:
+    vm_state: shutdown
+
+- name: wf_Subtask Test Satellite Connectivity Only
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/ping-server.yml
+  credentials:
+    - Ansible-user SSH key
+  limit: satellite.tonneson.home
+
+- name: wf_Subtask Satellite Publish and Promote CVs
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: satellite/satellite-publish-and-promote-cvs.yml
+  credentials:
+    - Ansible-user SSH key
+    - Custom Cred - Sat password
+  become_enabled: true
+  limit: satellite.tonneson.home
+  extra_vars:
+    vault_admin_password: !unsafe '{{ insert_var_secret }}'
+
+- name: wf_Subtask Satellite Cleanup CVs
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: satellite/satellite-cleanup-cvs-using-role.yml
+  credentials:
+    - Ansible-user SSH key
+    - Custom Cred - Sat password
+  become_enabled: true
+  limit: satellite.tonneson.home
+  extra_vars:
+    vault_admin_password: !unsafe '{{ insert_var_secret }}'
+
+
+# Run type jobs with surveys
+- name: Test - Patch Systems + Survey + Prompt Limit
+  inventory: Satellite Inventory
+  project: "!My Github Repo"
+  playbook: linux/patch-systems.yml
+  credentials:
+    - Ansible-user SSH key
+  become_enabled: true
+  ask_limit_on_launch: true
+  survey_enabled: true
+  survey: "{{ lookup('template', 'template_surveys/patch_systems_survey.json') | regex_replace('\\n', '') }}"

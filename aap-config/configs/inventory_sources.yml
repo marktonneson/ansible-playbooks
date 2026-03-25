@@ -1,0 +1,97 @@
+---
+controller_inventory_sources:
+  - name: Github Static Inventory - All
+    source: scm
+    source_project: "!My Github Repo"
+    source_path: inventory/inventory.ini
+    inventory: All Hosts
+    description: Inventory sourced from a Project
+    overwrite: true
+    overwrite_vars: true
+
+  - name: Github Static Inventory - Libvirt
+    source: scm
+    source_project: "!My Github Repo"
+    source_path: inventory/inventory.ini
+    inventory: Libvirt Linux Hosts
+    description: Inventory sourced from a Project
+    overwrite: true
+    overwrite_vars: true
+    host_filter: '^(?!.*(example\.com|tonneson\.home)).*$'
+
+  - name: Github Static Inventory - Other
+    source: scm
+    source_project: "!My Github Repo"
+    source_path: inventory/inventory.ini
+    inventory: Other Hosts
+    description: Inventory sourced from a Project
+    overwrite: true
+    overwrite_vars: true
+    host_filter: '^([a-zA-Z0-9-]+\.)*(example\.com|tonneson\.home)$'
+
+  - name: satellite.tonneson.home - All
+    source: satellite6
+    credential: Sat6 Credential for AAP
+    host_filter: "^(?!virt-who).*$"
+    inventory: All Hosts
+    description: Inventory sourced from Satellite
+    overwrite: true
+    overwrite_vars: true
+    source_vars:
+      group_prefix: foreman_
+      keyed_groups:
+      - key: foreman['environment_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_') | regex_replace('none', '')
+        prefix: foreman_environment_
+        separator: ''
+      - key: foreman['location_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_')
+        prefix: foreman_location_
+        separator: ''
+      - key: foreman['organization_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_')
+        prefix: foreman_organization_
+        separator: ''
+      - key: foreman['content_facet_attributes']['lifecycle_environment_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_')
+        prefix: foreman_lifecycle_environment_
+        separator: ''
+      - key: foreman['content_facet_attributes']['content_view_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_')
+        prefix: foreman_content_view_
+        separator: ''
+      legacy_hostvars: true
+      plugin: theforeman.foreman.foreman
+      validate_certs: false
+      want_facts: true
+      want_hostcollections: true
+      want_params: true
+
+  - name: satellite.tonneson.home
+    source: satellite6
+    credential: Sat6 Credential for AAP
+    host_filter: "^(?!virt-who).*$"
+    inventory: Satellite Inventory
+    description: Inventory sourced from Satellite
+    overwrite: true
+    overwrite_vars: true
+    source_vars:
+      group_prefix: foreman_
+      keyed_groups:
+      - key: foreman['environment_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_') | regex_replace('none', '')
+        prefix: foreman_environment_
+        separator: ''
+      - key: foreman['location_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_')
+        prefix: foreman_location_
+        separator: ''
+      - key: foreman['organization_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_')
+        prefix: foreman_organization_
+        separator: ''
+      - key: foreman['content_facet_attributes']['lifecycle_environment_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_')
+        prefix: foreman_lifecycle_environment_
+        separator: ''
+      - key: foreman['content_facet_attributes']['content_view_name'] | lower | regex_replace(' ', '') | regex_replace('[^A-Za-z0-9_]', '_')
+        prefix: foreman_content_view_
+        separator: ''
+      legacy_hostvars: true
+      plugin: theforeman.foreman.foreman
+      validate_certs: false
+      want_facts: true
+      want_hostcollections: true
+      want_params: true
+
