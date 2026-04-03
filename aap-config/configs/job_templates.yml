@@ -273,6 +273,7 @@ controller_templates:
   become_enabled: true
   limit: satellite.tonneson.home
   extra_vars:
+    my_admin_user: cv-manager
     vault_admin_password: !unsafe '{{ insert_var_secret }}'
 
 - name: wf_Subtask Satellite Cleanup CVs
@@ -285,6 +286,7 @@ controller_templates:
   become_enabled: true
   limit: satellite.tonneson.home
   extra_vars:
+    my_admin_user: cv-manager
     vault_admin_password: !unsafe '{{ insert_var_secret }}'
 
 
