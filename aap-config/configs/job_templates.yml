@@ -226,13 +226,14 @@ controller_templates:
 
 # Workflow subtasks
 - name: wf_Subtask Libvirt Start VMs
-  inventory: Libvirt Linux Hosts
+  inventory: All Hosts
   project: "!My Github Repo"
   playbook: linux/virt-start-stop-vms-loop.yml
   credentials:
     - Ansible-user SSH key
   become_enabled: true
-  limit: vbox.tonneson.home
+  extra_vars:
+    libvirt_host: vbox.tonneson.home
 
 - name: wf_Subtask Patch Other Linux
   inventory: Libvirt Linux Hosts
@@ -243,7 +244,7 @@ controller_templates:
   become_enabled: true
     
 - name: wf_Subtask Libvirt Stop VMs
-  inventory: Libvirt Linux Hosts
+  inventory: All Hosts
   project: "!My Github Repo"
   playbook: linux/virt-start-stop-vms-loop.yml
   credentials:
@@ -251,6 +252,7 @@ controller_templates:
   become_enabled: true
   limit: vbox.tonneson.home
   extra_vars:
+    libvirt_host: vbox.tonneson.home
     vm_state: shutdown
 
 - name: wf_Subtask Test Satellite Connectivity Only
@@ -271,6 +273,7 @@ controller_templates:
   become_enabled: true
   limit: satellite.tonneson.home
   extra_vars:
+    my_admin_user: cv-manager
     vault_admin_password: !unsafe '{{ insert_var_secret }}'
 
 - name: wf_Subtask Satellite Cleanup CVs
@@ -283,6 +286,7 @@ controller_templates:
   become_enabled: true
   limit: satellite.tonneson.home
   extra_vars:
+    my_admin_user: cv-manager
     vault_admin_password: !unsafe '{{ insert_var_secret }}'
 
 

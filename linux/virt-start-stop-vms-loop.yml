@@ -1,6 +1,6 @@
 ---
 - name: "Control libvirt machine"
-  hosts: all 
+  hosts: "{{ libvirt_host | default ('all') }}"
   gather_facts: no
 
   tasks:
