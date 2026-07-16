@@ -14,7 +14,7 @@
     admin_password: "{{ vault_admin_password }}"
     satellite_host: "{{ my_satellite | default ('satellite.tonneson.home') }}"
     org_to_target: "{{ my_organization | default ('Tonneson Lab') }}"
-    default_description: "Monthly - {{ now().strftime('%Y-%m-%d') }}"
+    default_description: "Monthly - {{ now(fmt='%Y-%m-%d') }}"
 
   tasks:
     - name: "Promote CCVs in QA (n-2) to Prod"
