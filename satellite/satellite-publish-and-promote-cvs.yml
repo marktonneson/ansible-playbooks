@@ -69,6 +69,8 @@
         - cv-RHEL8
         - cv-RHEL9
         - cv-RHEL10
+        - cv-EPEL
+        - cv-Sat6-Clients
 
     - name: "Publish CCVs and promote that version to Dev"
       redhat.satellite.content_view_version:
@@ -87,3 +89,35 @@
         - ccv-RHEL8-plus-SatClient
         - ccv-RHEL9-plus-SatClient
         - ccv-RHEL10-plus-SatClient
+
+
+    - name: "Publish and promote Capsule CV"
+      redhat.satellite.content_view_version:
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        content_view: "{{ item }}"
+        organization: "{{ org_to_target }}"
+        validate_certs: no
+        description: "{{ default_description }}"
+        lifecycle_environments:
+          - Library
+          - Capsule-Prod
+      loop:
+        - cv-Capsule
+
+
+    - name: "Publish and promote Generic Lab CV"
+      redhat.satellite.content_view_version:
+        username: "{{ admin_username }}"
+        password: "{{ admin_password }}"
+        server_url: "https://{{ satellite_host }}"
+        content_view: "{{ item }}"
+        organization: "{{ org_to_target }}"
+        validate_certs: no
+        description: "{{ default_description }}"
+        lifecycle_environments:
+          - Library
+          - Generic-Lab
+      loop:
+        - cv-Generic-Lab
