@@ -49,6 +49,7 @@
     
     - name: "Reboot system"
       ansible.builtin.reboot:
+      when: inventory_hostname != "vbox.tonneson.home"
 
     - name: "Validate update, output OS version"
       ansible.builtin.debug:
