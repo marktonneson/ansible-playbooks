@@ -2,6 +2,8 @@
 - name: "Control libvirt machine"
   hosts: "{{ libvirt_host | default ('all') }}"
   gather_facts: no
+  environment:
+    PYTHONWARNINGS: "ignore"
 
   tasks:
     - name: Change VM state 
