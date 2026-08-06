@@ -3,6 +3,8 @@
   hosts: all
   become: yes
   gather_facts: yes
+  environment:
+    PYTHONWARNINGS: "ignore"
 
   tasks:
     - name: "Patch systems that work with package"
