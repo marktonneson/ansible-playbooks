@@ -1,0 +1,14 @@
+---
+name: Test webhook rulebook
+hosts: all
+sources:
+  - eda.builtin.webhook:
+      host: 0.0.0.0
+      port: 5000
+rules:
+  - name: Catch all events and debug
+    condition: event.payload.message == "test"
+    action:
+      - debug:
+          msg: "Received test event successfully!"
+
