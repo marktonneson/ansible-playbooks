@@ -1,0 +1,35 @@
+---
+- name: Configure Command Line Assistant
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Ensure command-line-assistant is installed
+      ansible.builtin.package:
+        name: command-line-assistant
+        state: present
+
+    - name: Ensure configuration directory exists
+      ansible.builtin.file:
+        path: /etc/xdg/command-line-assistant
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Update endpoint URL in config.toml
+      ansible.builtin.lineinfile:
+        path: /etc/xdg/command-line-assistant/config.toml
+        regexp: '^endpoint\s*='
+        line: 'endpoint = "https://satellite.tonneson.home/api/lightspeed/v1"'
+        owner: root
+        group: root
+        mode: '0644'
+        create: true
+      notify: Restart clad service
+
+  handlers:
+    - name: Restart clad service
+      ansible.builtin.service:
+        name: clad
+        state: restarted
