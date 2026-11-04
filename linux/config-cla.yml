@@ -28,8 +28,18 @@
         create: true
       notify: Restart clad service
 
+    - name: Ensure Satellite self-signed cert is added to truststore
+      ansible.builtin.copy:
+        src: /etc/rhsm/ca/katello*
+        dest: /etc/pki/ca-trust/source/anchors/
+        remote_src: true
+      notify: Run update-ca-trust
+
   handlers:
     - name: Restart clad service
       ansible.builtin.service:
         name: clad
         state: restarted
+    - name: Run update-ca-trust
+      ansible.builtin.command:
+        cmd: /usr/bin/update-ca-trust
