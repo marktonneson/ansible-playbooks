@@ -1,0 +1,65 @@
+---
+- name: Manage KVM/libvirt VM snapshots
+  hosts: kvm_hypervisor # Replace with your hypervisor inventory group or hostname
+  become: true
+  vars:
+    # Toggle between your two domain lists as needed (or pass via AAP Survey)
+    domains:
+      - rhel9-aap-container
+      - rhel9-capsule
+      - rhel9-satellite6
+    # domains_with_idm:
+    #   - rhel7-capsule
+    #   - rhel7-satellite6
+    #   - rhel8-ansibleautomationhub
+    #   - rhel8-ansibletower
+    #   - rhel8-rhvm
+    #   - rhel7-idm
+    #   - rhel7-idm-ad
+    #   - rhel7-idm-replica
+    #   - win2k12r2-idm
+
+    # Set to true to mirror your commented-out `list_running_domains` logic
+    only_running_domains: false
+
+    # Retention count (replaces the `wc -l -gt 6` blank-line workaround)
+    snapshots_to_keep: 4
+
+    # Matches `date +%F-%H%M%S`
+    snapshot_timestamp: "{{ lookup('pipe', 'date +%F-%H%M%S') }}"
+
+  tasks:
+    - name: Gather list of running VMs (if only_running_domains is enabled)
+      community.libvirt.virt:
+        command: list_vms
+        state: running
+      register: running_vms
+      when: only_running_domains | bool
+
+    - name: Determine target domains
+      ansible.builtin.set_fact:
+        target_domains: "{{ running_vms.list_vms if (only_running_domains | bool) else domains }}"
+
+    - name: Create timestamped snapshot for each domain
+      ansible.builtin.command:
+        cmd: "virsh snapshot-create-as {{ item }} --name Snapshot-{{ snapshot_timestamp }}"
+      loop: "{{ target_domains }}"
+      changed_when: true
+
+    - name: List existing snapshots for each domain
+      ansible.builtin.command:
+        cmd: "virsh snapshot-list {{ item }} --name"
+      loop: "{{ target_domains }}"
+      register: snapshot_lists
+      changed_when: false
+
+    - name: Prune older snapshots (keep last {{ snapshots_to_keep }})
+      ansible.builtin.include_tasks: prune_snapshots.yml
+      loop: "{{ snapshot_lists.results }}"
+      loop_control:
+        loop_var: domain_snap
+        label: "{{ domain_snap.item }}"
+      # Filter out blank lines cleanly without needing the `-gt 6` hack
+      vars:
+        clean_snapshots: "{{ domain_snap.stdout_lines | select('truthy') | list }}"
+      when: (clean_snapshots | length) > snapshots_to_keep

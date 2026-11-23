@@ -1,0 +1,23 @@
+---
+- name: Suspend, prune old snapshots, and resume {{ domain_snap.item }}
+  vars:
+    snapshots_to_delete: "{{ clean_snapshots[:(clean_snapshots | length - snapshots_to_keep)] }}"
+  block:
+    - name: Suspend {{ domain_snap.item }} before deleting snapshots
+      community.libvirt.virt:
+        name: "{{ domain_snap.item }}"
+        state: paused
+
+    - name: Delete expired snapshots on {{ domain_snap.item }}
+      ansible.builtin.command:
+        cmd: "virsh snapshot-delete {{ domain_snap.item }} --snapshotname {{ snap_name }}"
+      loop: "{{ snapshots_to_delete }}"
+      loop_control:
+        loop_var: snap_name
+      changed_when: true
+
+  always:
+    - name: Resume {{ domain_snap.item }}
+      community.libvirt.virt:
+        name: "{{ domain_snap.item }}"
+        state: running
