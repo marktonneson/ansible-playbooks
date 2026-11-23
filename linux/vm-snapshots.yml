@@ -1,6 +1,6 @@
 ---
 - name: Manage KVM/libvirt VM snapshots
-  hosts: kvm_hypervisor # Replace with your hypervisor inventory group or hostname
+  hosts: all # Replace with your hypervisor inventory group or hostname
   become: true
   vars:
     # Toggle between your two domain lists as needed (or pass via AAP Survey)
@@ -8,15 +8,11 @@
       - rhel9-aap-container
       - rhel9-capsule
       - rhel9-satellite6
-    # domains_with_idm:
-    #   - rhel7-capsule
-    #   - rhel7-satellite6
+    # other_domains:
     #   - rhel8-ansibleautomationhub
-    #   - rhel8-ansibletower
+    #   - rhel8-ansiblecontroller
     #   - rhel8-rhvm
-    #   - rhel7-idm
-    #   - rhel7-idm-ad
-    #   - rhel7-idm-replica
+    #   - rhel8-idm
     #   - win2k12r2-idm
 
     # Set to true to mirror your commented-out `list_running_domains` logic
